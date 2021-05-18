@@ -1,3 +1,9 @@
 /dream-web/target/
 /dream-mapper/target/
 /.idea/
+/dream-dubbo-service/dream-dubbo-service.iml
+/dream-dubbo-service-api/dream-dubbo-service-api.iml
+/dream.iml
+/dream-mapper/dream-mapper.iml
+/dream-service/dream-service.iml
+/dream-web/dream-web.iml
