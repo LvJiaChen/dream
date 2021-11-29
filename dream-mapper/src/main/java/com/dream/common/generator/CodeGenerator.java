@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author lvxiaozuo
@@ -13,6 +15,13 @@ import java.util.Collections;
 public class CodeGenerator {
 
     public static void main(String[] args) {
+        Map<OutputFile, String> pathInfo = new HashMap<>();
+        pathInfo.put(OutputFile.controller, "E:\\IdeaProject\\dream\\dream-web\\src\\main\\java\\com\\dream\\web\\application\\Controller");
+        pathInfo.put(OutputFile.mapper, "E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\java\\com\\dream\\common\\mapper");
+        pathInfo.put(OutputFile.serviceImpl, "E:\\IdeaProject\\dream\\dream-service\\src\\main\\java\\com\\dream\\service\\impl");
+        pathInfo.put(OutputFile.service, "E:\\IdeaProject\\dream\\dream-service\\src\\main\\java\\com\\dream\\service");
+        pathInfo.put(OutputFile.entity, "E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\java\\com\\dream\\common\\entity");
+        pathInfo.put(OutputFile.mapperXml, "E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\resources\\mapper");
         FastAutoGenerator.create("jdbc:postgresql://10.10.20.132:5531/yasha_erp", "tpg_admin", "pG4tk8Rfd")
                 .globalConfig(builder -> {
                     builder.author("lvxiaozuo") // 设置作者
@@ -22,13 +31,12 @@ public class CodeGenerator {
                 })
                 .packageConfig(builder -> {
                     builder.parent("com.dream") // 设置父包名
-                            .moduleName("common") // 设置父包模块名
-                            .pathInfo(Collections.singletonMap(OutputFile.controller,"E:\\IdeaProject\\dream\\dream-web\\src\\main\\java\\com\\dream\\web\\application\\Controller"))
-                            .pathInfo(Collections.singletonMap(OutputFile.mapper,"E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\java\\com\\dream\\common\\mapper"))
-                            .pathInfo(Collections.singletonMap(OutputFile.serviceImpl,"E:\\IdeaProject\\dream\\dream-service\\src\\main\\java\\com\\dream\\service\\impl"))
-                            .pathInfo(Collections.singletonMap(OutputFile.service,"E:\\IdeaProject\\dream\\dream-service\\src\\main\\java\\com\\dream\\service"))
-                            .pathInfo(Collections.singletonMap(OutputFile.entity,"E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\java\\com\\dream\\common\\entity"))
-                            .pathInfo(Collections.singletonMap(OutputFile.mapperXml, "E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\resources\\mapper")); // 设置mapperXml生成路径
+                            .mapper("common.mapper") // 设置父包模块名
+                            .service("service")
+                            .serviceImpl("service.impl")
+                            .controller("web.application.Controller")
+                            .entity("common.entity")
+                            .pathInfo(pathInfo);
                 })
                 .strategyConfig(builder -> {
                     builder.addInclude("erp_entry") // 设置需要生成的表名
