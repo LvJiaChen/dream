@@ -7,12 +7,12 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @MapperScan("com.dream.common.mapper")
-@ComponentScan( basePackages = {
-"com.dream.service",
+@ComponentScan(basePackages = {
+        "com.dream.service", "com.dream.web.application.Controller", "com.dream.common.mapper"
 })
 public class MainApplication {
     public static void main(String[] args) {
-        SpringApplication.run(MainApplication.class,args);
+        SpringApplication.run(MainApplication.class, args);
         System.out.println("********************************************WEB启动完成***************************************");
     }
 

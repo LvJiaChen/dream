@@ -23,10 +23,15 @@ public class CodeGenerator {
                 .packageConfig(builder -> {
                     builder.parent("com.dream") // 设置父包名
                             .moduleName("common") // 设置父包模块名
+                            .pathInfo(Collections.singletonMap(OutputFile.controller,"E:\\IdeaProject\\dream\\dream-web\\src\\main\\java\\com\\dream\\web\\application\\Controller"))
+                            .pathInfo(Collections.singletonMap(OutputFile.mapper,"E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\java\\com\\dream\\common\\mapper"))
+                            .pathInfo(Collections.singletonMap(OutputFile.serviceImpl,"E:\\IdeaProject\\dream\\dream-service\\src\\main\\java\\com\\dream\\service\\impl"))
+                            .pathInfo(Collections.singletonMap(OutputFile.service,"E:\\IdeaProject\\dream\\dream-service\\src\\main\\java\\com\\dream\\service"))
+                            .pathInfo(Collections.singletonMap(OutputFile.entity,"E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\java\\com\\dream\\common\\entity"))
                             .pathInfo(Collections.singletonMap(OutputFile.mapperXml, "E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\resources\\mapper")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("dream_user") // 设置需要生成的表名
+                    builder.addInclude("erp_entry") // 设置需要生成的表名
                             .addTablePrefix("dream_"); // 设置过滤表前缀
                 })
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板

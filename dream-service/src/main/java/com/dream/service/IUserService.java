@@ -15,5 +15,7 @@ import java.util.List;
  */
 public interface IUserService extends IService<User> {
 
-    String selectUserNameBy(Integer id);
+    User selectUserNameBy(Integer id);
+
+    List<User> queryUser(int i);
 }

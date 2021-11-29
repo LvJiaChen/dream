@@ -1,11 +1,15 @@
 package com.dream.web.application.Controller;
 
 
+import com.dream.common.entity.User;
 import com.dream.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * <p>
@@ -21,12 +25,12 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    @RequestMapping("hello")
+    @RequestMapping(value = "hello",method = RequestMethod.POST)
     @ResponseBody
     public String hello(){
-        String userToString = userService.selectUserNameBy(1);
-        System.out.println(userToString);
-        return userToString;
+        User user = userService.selectUserNameBy(1);
+        List<User> userToString = userService.queryUser(1);
+        return "userToString";
     }
 
 }

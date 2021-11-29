@@ -22,8 +22,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Autowired
     private UserMapper userMapper;
 
-    public String selectUserNameBy(Integer id) {
+    public User selectUserNameBy(Integer id) {
         User user= userMapper.selectById(id);
-        return user.toString();
+        return user;
+    }
+
+    public List<User> queryUser(int i) {
+        List<User> userList= userMapper.queryUser(1);
+        return userList;
     }
 }

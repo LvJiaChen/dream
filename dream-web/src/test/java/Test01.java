@@ -23,9 +23,9 @@ public class Test01 {
     @Test
     public void testSelect() {
         System.out.println(("----- selectAll method test ------"));
-        String userList = userService.selectUserNameBy(1);
+        User user = userService.selectUserNameBy(1);
         //Assert.assertEquals(5, userList.size());
-        System.out.println(userList);
+        System.out.println(user);
     }
 
     public static void main(String[] args) {
