@@ -12,9 +12,14 @@
         <module>dream-service</module>
         <module>dream-mapper</module>
         <module>dream-web</module>
-        <module>dream-dubbo-service</module>
-        <module>dream-dubbo-service-api</module>
     </modules>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-core</artifactId>
+            <version>3.4.2</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 </project>

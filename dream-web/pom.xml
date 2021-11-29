@@ -20,7 +20,11 @@
             <groupId>org.example</groupId>
             <artifactId>dream-mapper</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>dream-service</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <!-- spring boot-->
