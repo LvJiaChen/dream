@@ -8,7 +8,10 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @MapperScan("com.dream.common.mapper")
 @ComponentScan(basePackages = {
-        "com.dream.service", "com.dream.web.application.Controller", "com.dream.common.mapper"
+        "com.dream.service",
+        "com.dream.web.application.Controller",
+        "com.dream.common.mapper",
+        "com.dream.web.application.config"
 })
 public class MainApplication {
     public static void main(String[] args) {

@@ -4,15 +4,20 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.baomidou.mybatisplus.annotation.Version;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * <p>
  * 
  * </p>
  *
  * @author lvxiaozuo
- * @since 2021-11-28
+ * @since 2021-11-29
  */
 @TableName("dream_user")
+@ApiModel(value = "User对象", description = "")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,6 +39,8 @@ public class User implements Serializable {
     private LocalDateTime updateTime;
 
     private String uuidT;
+    @Version
+    private Integer version;
 
     public Integer getId() {
         return id;
@@ -98,6 +105,13 @@ public class User implements Serializable {
     public void setUuidT(String uuidT) {
         this.uuidT = uuidT;
     }
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     @Override
     public String toString() {
@@ -111,6 +125,7 @@ public class User implements Serializable {
             ", updater=" + updater +
             ", updateTime=" + updateTime +
             ", uuidT=" + uuidT +
+            ", version=" + version +
         "}";
     }
 }
