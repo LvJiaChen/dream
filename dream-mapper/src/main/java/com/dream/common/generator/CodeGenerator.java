@@ -2,6 +2,8 @@ package com.dream.common.generator;
 
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
+import com.baomidou.mybatisplus.generator.config.StrategyConfig;
+import com.baomidou.mybatisplus.generator.config.TemplateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.util.Collections;
@@ -39,8 +41,9 @@ public class CodeGenerator {
                             .pathInfo(pathInfo);
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("erp_entry") // 设置需要生成的表名
-                            .addTablePrefix("dream_"); // 设置过滤表前缀
+                    builder.addInclude("dream_user") // 设置需要生成的表名
+                            .addTablePrefix("dream_") // 设置过滤表前缀
+                            .entityBuilder().enableLombok();
                 })
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();

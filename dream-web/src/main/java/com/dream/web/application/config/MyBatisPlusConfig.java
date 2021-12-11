@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * @author lvxiaozuo
  * @date 2021/11/29 21:31
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class MyBatisPlusConfig {
     @Bean
     public OptimisticLockerInnerInterceptor optimisticLockerInterceptor(){
