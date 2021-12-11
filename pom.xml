@@ -23,7 +23,4 @@
         <module>dream-mapper</module>
         <module>dream-web</module>
     </modules>
-    <dependencies>
-
-    </dependencies>
 </project>
