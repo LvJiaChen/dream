@@ -1,5 +1,7 @@
 package com.dream.common.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -14,23 +16,29 @@ import lombok.Setter;
  * </p>
  *
  * @author lvxiaozuo
- * @since 2021-12-11
+ * @since 2022-01-06
  */
 @Getter
 @Setter
-@TableName("dream_user")
-@ApiModel(value = "User对象", description = "")
-public class User implements Serializable {
+@TableName("wms_user")
+@ApiModel(value = "WmsUser对象", description = "")
+public class WmsUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private String name;
+    @ApiModelProperty("工号")
+    private String userNo;
 
-    private Integer age;
+    @ApiModelProperty("姓名")
+    private String userName;
 
-    private String email;
+    @ApiModelProperty("密码")
+    private String password;
+
+    private Integer version;
 
     private String creator;
 
@@ -39,10 +47,6 @@ public class User implements Serializable {
     private String updater;
 
     private LocalDateTime updateTime;
-
-    private String uuidT;
-
-    private Integer version;
 
 
 }

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dream.common.mapper.UserMapper">
-    <select id="queryUser" resultType="com.dream.common.entity.User" parameterType="Integer">
-        select * from dream_user where id=#{param}
-    </select>
-</mapper>

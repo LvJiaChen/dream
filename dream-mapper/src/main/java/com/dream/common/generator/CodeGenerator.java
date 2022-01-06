@@ -24,7 +24,7 @@ public class CodeGenerator {
         pathInfo.put(OutputFile.service, "E:\\IdeaProject\\dream\\dream-service\\src\\main\\java\\com\\dream\\service");
         pathInfo.put(OutputFile.entity, "E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\java\\com\\dream\\common\\entity");
         pathInfo.put(OutputFile.mapperXml, "E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\resources\\mapper");
-        FastAutoGenerator.create("jdbc:postgresql://10.10.20.132:5531/yasha_erp", "tpg_admin", "pG4tk8Rfd")
+        FastAutoGenerator.create("jdbc:mysql://localhost:3306/wms", "root", "123456")
                 .globalConfig(builder -> {
                     builder.author("lvxiaozuo") // 设置作者
                             .enableSwagger() // 开启 swagger 模式
@@ -41,8 +41,8 @@ public class CodeGenerator {
                             .pathInfo(pathInfo);
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("dream_user") // 设置需要生成的表名
-                            .addTablePrefix("dream_") // 设置过滤表前缀
+                    builder.addInclude("wms_user") // 设置需要生成的表名
+                            //.addTablePrefix("dream_") // 设置过滤表前缀
                             .entityBuilder().enableLombok();
                 })
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板

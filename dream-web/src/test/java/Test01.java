@@ -1,32 +1,14 @@
-import com.dream.common.entity.User;
-import com.dream.common.mapper.UserMapper;
-import com.dream.service.impl.UserServiceImpl;
 import com.dream.web.application.MainApplication;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes =  {MainApplication.class})
 public class Test01 {
-
-
-    @Autowired
-    private UserServiceImpl userService;
-
-    @Test
-    public void testSelect() {
-        System.out.println(("----- selectAll method test ------"));
-        User user = userService.selectUserNameBy(1);
-        //Assert.assertEquals(5, userList.size());
-        System.out.println(user);
-    }
 
     public static void main(String[] args) {
         Account account=new Account();
