@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.baomidou.mybatisplus.annotation.Version;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -37,7 +39,7 @@ public class WmsUser implements Serializable {
 
     @ApiModelProperty("密码")
     private String password;
-
+    @Version
     private Integer version;
 
     private String creator;
@@ -47,6 +49,14 @@ public class WmsUser implements Serializable {
     private String updater;
 
     private LocalDateTime updateTime;
+
+    private String token;
+
+    @ApiModelProperty("过期时间")
+    private LocalDateTime expireTime;
+
+    @ApiModelProperty("登录时间")
+    private LocalDateTime loginTime;
 
 
 }

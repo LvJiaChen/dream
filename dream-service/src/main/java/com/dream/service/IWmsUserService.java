@@ -13,4 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IWmsUserService extends IService<WmsUser> {
 
+    String createToken(WmsUser user);
+
+    void logout(String token);
 }

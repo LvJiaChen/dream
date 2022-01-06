@@ -1,12 +1,18 @@
 package com.dream.web.application.Controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dream.common.entity.WmsUser;
+import com.dream.common.vo.TokenVO;
 import com.dream.service.IWmsUserService;
+import com.dream.web.application.utils.Result;
+import com.dream.web.application.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * <p>
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/wms-user")
+@ResponseBody
 public class WmsUserController {
     @Autowired
     private IWmsUserService userService;
@@ -25,7 +32,46 @@ public class WmsUserController {
     @GetMapping(value = "hello")
     public String hello(){
         WmsUser wmsUser=userService.getById(1);
+        return "hello";
+    }
 
-        return "userToString";
+    /**
+     * 登录
+     *
+     * @param loginMap
+     * @return token登录凭证
+     */
+    @PostMapping("/login")
+    public Result login( @RequestBody Map loginMap) {
+        String userNo = (String) loginMap.get("userNo");
+        String password = (String) loginMap.get("password");
+        //用户信
+        QueryWrapper<WmsUser> wrapper=new QueryWrapper<>();
+        wrapper.eq("user_no",userNo);
+        WmsUser user=userService.getOne(wrapper);
+        //账号不存在、密码错误
+        if (user == null || !user.getPassword().equals(password)) {
+            return Result.build(400, "用户名或密码错误");
+        } else {
+            //生成token，并保存到数据库
+            String token = userService.createToken(user);
+            TokenVO tokenVO = new TokenVO();
+            tokenVO.setToken(token);
+            return Result.ok(tokenVO);
+        }
+    }
+
+    /**
+     * 登出
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/logout")
+    public Result logout(HttpServletRequest request) {
+        //从request中取出token
+        String token = TokenUtil.getRequestToken(request);
+        userService.logout(token);
+        return Result.ok();
     }
 }
