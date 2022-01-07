@@ -1,9 +1,11 @@
-import request from '../utils/request';
+import Axios from "../response/index";
 
-export const fetchData = query => {
-    return request({
-        url: './table.json',
-        method: 'get',
-        params: query
-    });
+const baseUrl="http://localhost:8081";
+
+export const submitFormLogin = data => {
+    return Axios.post(baseUrl+"/wms-user/login",data);
+};
+
+export const loginOutHeader = data => {
+    return Axios.post(baseUrl+"/wms-user/logout",data);
 };

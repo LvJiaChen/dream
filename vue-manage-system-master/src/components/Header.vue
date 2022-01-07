@@ -42,6 +42,7 @@
     </div>
 </template>
 <script>
+import { loginOutHeader,submitFormLogin } from "../api/index.js";
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -66,10 +67,14 @@ export default {
         // 用户名下拉菜单选择事件
         const router = useRouter();
         const handleCommand = (command) => {
-            if (command == "loginout") {
+            if (command === "loginout") {
+              let token= localStorage.getItem("token");
+              loginOutHeader({token:token}).then(res=>{
+                debugger
+              })
                 localStorage.removeItem("ms_username");
                 router.push("/login");
-            } else if (command == "user") {
+            } else if (command === "user") {
                 router.push("/user");
             }
         };

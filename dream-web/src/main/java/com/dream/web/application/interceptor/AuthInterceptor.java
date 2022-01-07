@@ -35,19 +35,19 @@ public class AuthInterceptor implements HandlerInterceptor {
         String token = TokenUtil.getRequestToken(request);
         //如果token为空
         if (StringUtils.isBlank(token)) {
-            setReturn(response,400,"用户未登录，请先登录");
+            setReturn(response,401,"用户未登录，请先登录");
             return false;
         }
         //1. 根据token，查询用户信息
         WmsUser user = iWmsUserService.getById(token);
         //2. 若用户不存在,
         if (user == null) {
-            setReturn(response,400,"用户不存在");
+            setReturn(response,401,"用户不存在");
             return false;
         }
         //3. token失效
         if (user.getExpireTime().isBefore(LocalDateTime.now())) {
-            setReturn(response,400,"用户登录凭证已失效，请重新登录");
+            setReturn(response,401,"用户登录凭证已失效，请重新登录");
             return false;
         }
 

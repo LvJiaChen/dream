@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -29,12 +28,6 @@ public class WmsUserController {
     @Autowired
     private IWmsUserService userService;
 
-    @GetMapping(value = "hello")
-    public String hello(){
-        WmsUser wmsUser=userService.getById(1);
-        return "hello";
-    }
-
     /**
      * 登录
      *
@@ -42,10 +35,10 @@ public class WmsUserController {
      * @return token登录凭证
      */
     @PostMapping("/login")
-    public Result login( @RequestBody Map loginMap) {
-        String userNo = (String) loginMap.get("userNo");
+    public Result login(@RequestBody Map loginMap) {
+        String userNo = (String) loginMap.get("username");
         String password = (String) loginMap.get("password");
-        //用户信
+        //用户信息
         QueryWrapper<WmsUser> wrapper=new QueryWrapper<>();
         wrapper.eq("user_no",userNo);
         WmsUser user=userService.getOne(wrapper);
@@ -68,9 +61,9 @@ public class WmsUserController {
      * @return
      */
     @PostMapping("/logout")
-    public Result logout(HttpServletRequest request) {
+    public Result logout(@RequestBody Map loginMap) {
         //从request中取出token
-        String token = TokenUtil.getRequestToken(request);
+        String token = TokenUtil.getRequestToken(null);
         userService.logout(token);
         return Result.ok();
     }
