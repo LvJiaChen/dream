@@ -89,11 +89,6 @@ export default {
                 title: "schart图表",
             },
             {
-                icon: "el-icon-lx-global",
-                index: "/i18n",
-                title: "国际化功能",
-            },
-            {
                 icon: "el-icon-lx-warn",
                 index: "7",
                 title: "错误处理",
@@ -107,12 +102,7 @@ export default {
                         title: "404页面",
                     },
                 ],
-            },
-            {
-                icon: "el-icon-lx-redpacket_fill",
-                index: "/donate",
-                title: "支持作者",
-            },
+            }
         ];
 
         const route = useRoute();
