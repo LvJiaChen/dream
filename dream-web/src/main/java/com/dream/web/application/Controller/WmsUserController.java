@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -61,9 +62,9 @@ public class WmsUserController {
      * @return
      */
     @PostMapping("/logout")
-    public Result logout(@RequestBody Map loginMap) {
+    public Result logout(HttpServletRequest request) {
         //从request中取出token
-        String token = TokenUtil.getRequestToken(null);
+        String token = TokenUtil.getRequestToken(request);
         userService.logout(token);
         return Result.ok();
     }

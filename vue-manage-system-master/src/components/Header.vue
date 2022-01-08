@@ -46,6 +46,7 @@ import { loginOutHeader,submitFormLogin } from "../api/index.js";
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import {ElMessage} from "element-plus";
 export default {
     setup() {
         const username = localStorage.getItem("ms_username");
@@ -68,12 +69,11 @@ export default {
         const router = useRouter();
         const handleCommand = (command) => {
             if (command === "loginout") {
-              let token= localStorage.getItem("token");
-              loginOutHeader({token:token}).then(res=>{
-                debugger
-              })
+              loginOutHeader().then(res=>{
+                ElMessage.success("登出成功");
                 localStorage.removeItem("ms_username");
                 router.push("/login");
+              })
             } else if (command === "user") {
                 router.push("/user");
             }
