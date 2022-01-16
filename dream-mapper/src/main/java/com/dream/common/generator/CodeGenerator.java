@@ -1,10 +1,12 @@
 package com.dream.common.generator;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.baomidou.mybatisplus.generator.fill.Column;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,9 +43,15 @@ public class CodeGenerator {
                             .pathInfo(pathInfo);
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("wms_user") // 设置需要生成的表名
+                    builder.addInclude("wms_material") // 设置需要生成的表名
                             //.addTablePrefix("dream_") // 设置过滤表前缀
-                            .entityBuilder().enableLombok();
+                            .entityBuilder()
+                            .versionColumnName("version")
+                            .addTableFills(new Column("creator", FieldFill.INSERT))
+                            .addTableFills(new Column("create_time", FieldFill.INSERT))
+                            .addTableFills(new Column("updater", FieldFill.UPDATE))
+                            .addTableFills(new Column("update_time", FieldFill.UPDATE))
+                            .enableLombok();
                 })
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();
