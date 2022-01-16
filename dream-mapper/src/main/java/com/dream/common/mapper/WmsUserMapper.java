@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author lvxiaozuo
- * @since 2022-01-06
+ * @since 2022-01-16
  */
 public interface WmsUserMapper extends BaseMapper<WmsUser> {
 
