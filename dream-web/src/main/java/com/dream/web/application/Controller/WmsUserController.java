@@ -4,6 +4,7 @@ package com.dream.web.application.Controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dream.common.entity.WmsUser;
 import com.dream.common.vo.TokenVO;
+import com.dream.common.vo.UserInfo;
 import com.dream.service.IWmsUserService;
 import com.dream.web.application.utils.Result;
 import com.dream.web.application.utils.TokenUtil;
@@ -47,6 +48,8 @@ public class WmsUserController {
         if (user == null || !user.getPassword().equals(password)) {
             return Result.build(400, "用户名或密码错误");
         } else {
+            //登录不走 UserInfoInterceptor ，所以这里设置UserInfo
+            UserInfo.setUser(user);
             //生成token，并保存到数据库
             String token = userService.createToken(user);
             TokenVO tokenVO = new TokenVO();

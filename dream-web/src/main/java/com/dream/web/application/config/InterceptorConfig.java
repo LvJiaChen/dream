@@ -3,6 +3,8 @@ package com.dream.web.application.config;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.dream.web.application.interceptor.AuthInterceptor;
+import com.dream.web.application.interceptor.UserInfoInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -30,6 +32,11 @@ public class InterceptorConfig implements WebMvcConfigurer {
         return new AuthInterceptor();
     }
 
+    @Bean
+    public UserInfoInterceptor userInfoInterceptor(){
+        return new UserInfoInterceptor();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 放行路径
@@ -37,6 +44,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
         patterns.add("/wms-user/login");
         patterns.add("/error");
         registry.addInterceptor(authInterceptor()).addPathPatterns("/**")
+                .excludePathPatterns(patterns);
+        registry.addInterceptor(userInfoInterceptor()).addPathPatterns("/**")
                 .excludePathPatterns(patterns);
     }
 }
