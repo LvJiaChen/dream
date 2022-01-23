@@ -55,7 +55,8 @@ public class WmsMaterialServiceImpl extends ServiceImpl<WmsMaterialMapper, WmsMa
     public void saveMaterial(Map param) {
         WmsMaterial material=BeanUtil.toBean(param,WmsMaterial.class, CopyOptions.create());
         if (material.getId()==null){
-            iWmsSerialNumberService.generateSerialNumberByModelCode("wms_material");
+            String materialNo= iWmsSerialNumberService.generateSerialNumberByModelCode("wms_material");
+            material.setMaterialNo(materialNo);
             //添加
             materialMapper.insert(material);
         }else {
