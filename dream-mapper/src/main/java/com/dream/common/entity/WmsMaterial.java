@@ -20,7 +20,7 @@ import lombok.Setter;
  * </p>
  *
  * @author lvxiaozuo
- * @since 2022-01-16
+ * @since 2022-01-23
  */
 @Getter
 @Setter
@@ -48,11 +48,14 @@ public class WmsMaterial implements Serializable {
     @ApiModelProperty("价格")
     private BigDecimal price;
 
+    @ApiModelProperty("单位")
+    private String unit;
+
     @ApiModelProperty("备注")
     private String remark;
 
-    @Version
     @TableField(fill = FieldFill.INSERT)
+    @Version
     private Integer version;
 
     @TableField(fill = FieldFill.INSERT)

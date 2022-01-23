@@ -19,4 +19,6 @@ public interface IWmsMaterialService extends IService<WmsMaterial> {
     IPage<WmsMaterial> queryMaterialList(Map param);
 
     void deleteMaterial(Map param);
+
+    void saveMaterial(Map param);
 }

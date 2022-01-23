@@ -43,6 +43,18 @@ public class WmsMaterialController {
     }
 
     /**
+     * 保存物料
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/saveMaterial")
+    public Result saveMaterial(@RequestBody Map param) {
+        iWmsMaterialService.saveMaterial(param);
+        return Result.ok();
+    }
+
+    /**
      * 删除物料
      *
      * @param

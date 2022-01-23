@@ -14,6 +14,10 @@ export const loginOutHeader = data => {
 export const queryMaterialList = data => {
     return Axios.post(baseUrl+"/wms-material/queryMaterialList",data);
 };
+/*编辑保存物料*/
+export const saveMaterial = data => {
+    return Axios.post(baseUrl+"/wms-material/saveMaterial",data);
+};
 /*删除物料*/
 export const deleteMaterial = data => {
     return Axios.post(baseUrl+"/wms-material/deleteMaterial",data);

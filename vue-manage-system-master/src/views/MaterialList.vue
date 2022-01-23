@@ -23,6 +23,7 @@
         <el-table-column label="价格">
           <template #default="scope">￥{{ scope.row.price }}</template>
         </el-table-column>
+        <el-table-column prop="unit" label="单位"></el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column prop="creator" label="创建人"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
@@ -55,6 +56,9 @@
         <el-form-item label="价格">
           <el-input-number v-model="form.price" :min="0" precision="2"></el-input-number>
         </el-form-item>
+        <el-form-item label="单位">
+          <el-input v-model="form.unit"></el-input>
+        </el-form-item>
         <el-form-item label="备注">
           <el-input type="textarea" v-model="form.remark"></el-input>
         </el-form-item>
@@ -71,15 +75,15 @@
 
 <script>
 import {reactive, ref} from "vue";
-import {queryMaterialList,deleteMaterial} from "../api";
+import {queryMaterialList,deleteMaterial,saveMaterial} from "../api";
 import {ElMessage, ElMessageBox} from "element-plus";
 
 export default {
   name: "MaterialList",
   setup() {
     const query = reactive({
-      materialNo: "",
-      materialName: "",
+      materialNo: null,
+      materialName: null,
       pageIndex: 1,
       pageSize: 10,
     });
@@ -129,24 +133,33 @@ export default {
       brand: "",
       space: "",
       price:null,
+      unit:"",
       remark:"",
+      version:null
     });
-    let idx = -1;
     const handleAddEdit = (index, row) => {
       if (row!==null){
         //编辑
-        idx = index;
         Object.keys(form).forEach((item) => {
           form[item] = row[item];
         });
+      }else {
+        form.id=null;
+        form.materialName="";
+        form.brand="";
+        form.space="";
+        form.price=null;
+        form.unit="";
+        form.remark="";
+        form.version=null;
       }
       editVisible.value = true;
     };
     const saveEdit = () => {
       editVisible.value = false;
-      ElMessage.success(`修改第 ${idx + 1} 行成功`);
-      Object.keys(form).forEach((item) => {
-        tableData.value[idx][item] = form[item];
+      saveMaterial(form).then((res) => {
+        ElMessage.success("保存成功");
+        getData();
       });
     };
 
