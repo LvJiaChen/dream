@@ -87,9 +87,7 @@ public class WmsSerialNumberServiceImpl extends ServiceImpl<WmsSerialNumberMappe
                     seed = maxSerialInt = 0;
                     //更新数据，重置maxSerialInt为0
                     serialNumber.setMaxSerial("0");
-                    WmsSerialNumber wmsSerialNumber = new WmsSerialNumber();
-                    BeanUtils.copyProperties(wmsSerialNumber,serialNumber);
-                    wmsSerialNumberMapper.insert(wmsSerialNumber);
+                    wmsSerialNumberMapper.updateById(serialNumber);
                 }
                 //动态数字生成
                 String formatSerialNum = format.format(seed);
