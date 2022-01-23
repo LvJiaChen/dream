@@ -52,6 +52,7 @@ public class WmsMaterial implements Serializable {
     private String remark;
 
     @Version
+    @TableField(fill = FieldFill.INSERT)
     private Integer version;
 
     @TableField(fill = FieldFill.INSERT)

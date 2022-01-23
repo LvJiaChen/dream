@@ -47,6 +47,7 @@ public class CodeGenerator {
                             //.addTablePrefix("dream_") // 设置过滤表前缀
                             .entityBuilder()
                             .versionColumnName("version")
+                            .addTableFills(new Column("version", FieldFill.INSERT))
                             .addTableFills(new Column("creator", FieldFill.INSERT))
                             .addTableFills(new Column("create_time", FieldFill.INSERT))
                             .addTableFills(new Column("updater", FieldFill.UPDATE))

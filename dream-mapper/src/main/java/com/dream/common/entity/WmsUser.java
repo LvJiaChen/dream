@@ -42,6 +42,7 @@ public class WmsUser implements Serializable {
     private String password;
 
     @Version
+    @TableField(fill = FieldFill.INSERT)
     private Integer version;
 
     @TableField(fill = FieldFill.INSERT)

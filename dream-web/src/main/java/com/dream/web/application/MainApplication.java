@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @MapperScan("com.dream.common.mapper")
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
         "com.dream.common.mapper",
         "com.dream.web.application.config"
 })
+@EnableTransactionManagement
 public class MainApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext context= SpringApplication.run(MainApplication.class, args);
