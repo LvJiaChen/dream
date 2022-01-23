@@ -1,9 +1,13 @@
 package com.dream.common.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -45,6 +49,22 @@ public class WmsSerialNumber implements Serializable {
 
     @ApiModelProperty("存放当前序列号的值")
     private String isAutoIncrement;
+
+    @TableField(fill = FieldFill.INSERT)
+    @Version
+    private Integer version;
+
+    @TableField(fill = FieldFill.INSERT)
+    private String creator;
+
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+
+    @TableField(fill = FieldFill.UPDATE)
+    private String updater;
+
+    @TableField(fill = FieldFill.UPDATE)
+    private LocalDateTime updateTime;
 
 
 }
