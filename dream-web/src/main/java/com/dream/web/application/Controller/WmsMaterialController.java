@@ -1,9 +1,18 @@
 package com.dream.web.application.Controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.dream.common.entity.WmsMaterial;
+import com.dream.service.IWmsMaterialService;
+import com.dream.web.application.utils.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -15,6 +24,33 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 @RequestMapping("/wms-material")
+@ResponseBody
 public class WmsMaterialController {
 
+    @Autowired
+    private IWmsMaterialService iWmsMaterialService;
+
+    /**
+     * 查询物料表数据
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/queryMaterialList")
+    public Result queryMaterialList(@RequestBody Map param) {
+        IPage<WmsMaterial> materialIPage= iWmsMaterialService.queryMaterialList(param);
+        return Result.ok(materialIPage);
+    }
+
+    /**
+     * 删除物料
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/deleteMaterial")
+    public Result deleteMaterial(@RequestBody Map param) {
+        iWmsMaterialService.deleteMaterial(param);
+        return Result.ok();
+    }
 }

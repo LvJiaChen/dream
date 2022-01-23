@@ -1,7 +1,9 @@
 package com.dream.web.application.config;
 
+import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.dream.web.application.interceptor.AuthInterceptor;
 import com.dream.web.application.interceptor.UserInfoInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return interceptor;
     }
 

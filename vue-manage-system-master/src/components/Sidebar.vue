@@ -45,8 +45,14 @@ export default {
             },
             {
                 icon: "el-icon-lx-cascades",
-                index: "/table",
-                title: "基础表格",
+                index: "1",
+                title: "基础数据",
+                subs: [
+                  {
+                    index: "/materialList",
+                    title: "物料管理",
+                  }
+                ]
             },
             {
                 icon: "el-icon-lx-copy",
