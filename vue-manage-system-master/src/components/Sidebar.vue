@@ -51,6 +51,10 @@ export default {
                   {
                     index: "/materialList",
                     title: "物料管理",
+                  },
+                  {
+                    index: "/warehouseList",
+                    title: "仓库管理",
                   }
                 ]
             },

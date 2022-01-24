@@ -42,9 +42,9 @@
       </div>
     </div>
     <!-- 添加、编辑弹出框 -->
-    <el-dialog title="添加/编辑" v-model="editVisible" width="30%">
-      <el-form label-width="70px">
-        <el-form-item label="物料名称">
+    <el-dialog title="添加/编辑" v-model="editVisible" width="30%" :before-close="dialogBeforeClose">
+      <el-form label-width="90px" :model="form" :rules="rules" ref="formRef">
+        <el-form-item label="物料名称" prop="materialName">
           <el-input v-model="form.materialName"></el-input>
         </el-form-item>
         <el-form-item label="品牌">
@@ -53,13 +53,13 @@
         <el-form-item label="规格型号">
           <el-input v-model="form.space"></el-input>
         </el-form-item>
-        <el-form-item label="价格">
+        <el-form-item label="价格" prop="price">
           <el-input-number v-model="form.price" :min="0" precision="2"></el-input-number>
         </el-form-item>
-        <el-form-item label="单位">
+        <el-form-item label="单位" prop="unit">
           <el-input v-model="form.unit"></el-input>
         </el-form-item>
-        <el-form-item label="备注">
+        <el-form-item label="备注" prop="remark">
           <el-input type="textarea" v-model="form.remark"></el-input>
         </el-form-item>
       </el-form>
@@ -89,6 +89,47 @@ export default {
     });
     const tableData = ref([]);
     const pageTotal = ref(0);
+    const rules = {
+      materialName: [
+        {
+          required: true,
+          message: '请输入物料名称',
+          trigger: 'blur',
+        },
+        {
+          max: 10,
+          message: '物料名称长度不能大于10',
+          trigger: 'blur',
+        },
+      ],
+      price:[
+        {
+          required: true,
+          message: '请输入价格',
+          trigger: 'blur',
+        }
+      ],
+      unit: [
+        {
+          required: true,
+          message: '请输入单位',
+          trigger: 'blur',
+        },
+        {
+          max: 5,
+          message: '单位长度不能大于5',
+          trigger: 'blur',
+        },
+      ],
+      remark:[
+        {
+          max: 100,
+          message: '备注长度不能大于100',
+          trigger: 'blur',
+        },
+      ]
+    }
+    let formRef=ref(null);
     // 获取表格数据
     const getData = () => {
       queryMaterialList(query).then((res) => {
@@ -156,12 +197,20 @@ export default {
       editVisible.value = true;
     };
     const saveEdit = () => {
-      editVisible.value = false;
-      saveMaterial(form).then((res) => {
-        ElMessage.success("保存成功");
-        getData();
-      });
+      formRef.value.validate((valid) => {
+        if (valid) {
+          editVisible.value = false;
+          saveMaterial(form).then((res) => {
+            ElMessage.success("保存成功");
+            getData();
+          });
+        }
+      })
     };
+    const dialogBeforeClose=()=>{
+      formRef.value.resetFields()
+      editVisible.value = false;
+    }
 
     return {
       query,
@@ -169,6 +218,9 @@ export default {
       pageTotal,
       editVisible,
       form,
+      rules,
+      formRef,
+      dialogBeforeClose,
       handleSearch,
       handlePageChange,
       handleDelete,
