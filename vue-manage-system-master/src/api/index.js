@@ -22,3 +22,16 @@ export const saveMaterial = data => {
 export const deleteMaterial = data => {
     return Axios.post(baseUrl+"/wms-material/deleteMaterial",data);
 };
+/*仓库管理*/
+/*查询仓库*/
+export const queryWarehouseList = data => {
+    return Axios.post(baseUrl+"/wms-warehouse/queryWarehouseList",data);
+};
+/*编辑保存仓库*/
+export const saveWarehouse = data => {
+    return Axios.post(baseUrl+"/wms-warehouse/saveWarehouse",data);
+};
+/*删除仓库*/
+export const deleteWarehouse = data => {
+    return Axios.post(baseUrl+"/wms-warehouse/deleteWarehouse",data);
+};

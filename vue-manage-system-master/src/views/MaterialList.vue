@@ -16,17 +16,21 @@
       </div>
       <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
         <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-        <el-table-column prop="materialNo" label="物料编码"></el-table-column>
-        <el-table-column prop="materialName" label="物料名称"></el-table-column>
+        <el-table-column prop="materialNo" label="物料编码" width="170"></el-table-column>
+        <el-table-column prop="materialName" label="物料名称" width="170"></el-table-column>
         <el-table-column prop="brand" label="品牌"></el-table-column>
         <el-table-column prop="space" label="规格型号"></el-table-column>
-        <el-table-column label="价格">
+        <el-table-column label="价格" width="100">
           <template #default="scope">￥{{ scope.row.price }}</template>
         </el-table-column>
-        <el-table-column prop="unit" label="单位"></el-table-column>
+        <el-table-column prop="unit" label="单位" width="100"></el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column prop="creator" label="创建人"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间"></el-table-column>
+        <el-table-column prop="createTime" width="160" label="创建时间">
+          <template #default="scope">
+            {{operatingTime(scope.row.createTime)}}
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="180" align="center">
           <template #default="scope">
             <el-button type="text" icon="el-icon-edit" @click="handleAddEdit(scope.$index, scope.row)">编辑
@@ -77,6 +81,7 @@
 import {reactive, ref} from "vue";
 import {queryMaterialList,deleteMaterial,saveMaterial} from "../api";
 import {ElMessage, ElMessageBox} from "element-plus";
+import moment from "moment";
 
 export default {
   name: "MaterialList",
@@ -210,8 +215,10 @@ export default {
     const dialogBeforeClose=()=>{
       formRef.value.resetFields()
       editVisible.value = false;
-    }
-
+    };
+    const operatingTime=(timeDate)=>{
+      return  moment(timeDate).format('yyyy-MM-DD HH:mm:ss');
+    };
     return {
       query,
       tableData,
@@ -220,6 +227,7 @@ export default {
       form,
       rules,
       formRef,
+      operatingTime,
       dialogBeforeClose,
       handleSearch,
       handlePageChange,

@@ -88,6 +88,17 @@ Axios.interceptors.response.use(response=>{
         return Promise.reject(response.status)
     }
 },error=>{
+    if (error.response.status) {
+        switch (error.response.status) {
+            case 404:
+                Vrouter.push({path:'/404'})
+                ElMessage.error("网络请求不存在");
+                break;
+            // 其他错误，直接抛出错误提示
+            default:
+                ElMessage.error(error.response.data.message);
+        }
+    }
     return Promise.reject(error)
 })
 export default Axios
