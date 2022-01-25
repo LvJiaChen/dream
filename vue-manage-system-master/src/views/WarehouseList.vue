@@ -138,9 +138,9 @@ export default {
     const editVisible = ref(false);
     let form = reactive({
       id:null,
-      code: "",
-      name: "",
-      address: "",
+      code: null,
+      name: null,
+      address: null,
       version:null
     });
     const handleAddEdit = (index, row) => {
@@ -151,9 +151,9 @@ export default {
         });
       }else {
         form.id=null;
-        form.code="";
-        form.name="";
-        form.address="";
+        form.code=null;
+        form.name=null;
+        form.address=null;
         form.version=null;
       }
       editVisible.value = true;

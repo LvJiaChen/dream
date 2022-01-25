@@ -178,12 +178,12 @@ export default {
     const editVisible = ref(false);
     let form = reactive({
       id:null,
-      materialName: "",
-      brand: "",
-      space: "",
+      materialName: null,
+      brand:null,
+      space:null,
       price:null,
-      unit:"",
-      remark:"",
+      unit:null,
+      remark:null,
       version:null
     });
     const handleAddEdit = (index, row) => {
@@ -194,12 +194,12 @@ export default {
         });
       }else {
         form.id=null;
-        form.materialName="";
-        form.brand="";
-        form.space="";
+        form.materialName=null;
+        form.brand=null;
+        form.space=null;
         form.price=null;
-        form.unit="";
-        form.remark="";
+        form.unit=null;
+        form.remark=null;
         form.version=null;
       }
       editVisible.value = true;
