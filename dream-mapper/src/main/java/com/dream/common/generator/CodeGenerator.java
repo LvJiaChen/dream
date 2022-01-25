@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateType;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.fill.Column;
 
@@ -29,7 +30,8 @@ public class CodeGenerator {
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/wms", "root", "123456")
                 .globalConfig(builder -> {
                     builder.author("lvxiaozuo") // 设置作者
-                            .enableSwagger() // 开启 swagger 模式
+                            .dateType(DateType.ONLY_DATE)
+                            .enableSwagger()// 开启 swagger 模式
                             .fileOverride() // 覆盖已生成文件
                             .outputDir("E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\java"); // 指定输出目录
                 })

@@ -1,5 +1,6 @@
 package com.dream.service.redis;
 
+import cn.hutool.core.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,12 +50,11 @@ public class CacheTemplate {
         return null;
     }
 
-/*    public <T> List<T> listCacheWrapper( String key, Class<T> clazz, CacheListCallback callback) {
-        List returnResult = null;
-
+    public <T> List<T> listCacheWrapper( String key, Class<T> clazz, CacheListCallback callback) {
+        List<T> returnResult = null;
         try {
-            returnResult = this.redisService.getList(basePrefix, key, clazz);
-            if (returnResult != null && returnResult.size() > 0) {
+            returnResult = this.redisService.getList(key, clazz);
+            if (CollUtil.isNotEmpty(returnResult)) {
                 log.info("获取cache " + key + " 成功");
                 return returnResult;
             }
@@ -63,22 +63,20 @@ public class CacheTemplate {
             log.info("获取cache " + key + " 失败");
         }
 
-        if (returnResult == null || returnResult.size() <= 0) {
+        if (CollUtil.isEmpty(returnResult)) {
             returnResult = callback.getLatestValues();
-            if (returnResult != null && returnResult.size() > 0) {
+            if (CollUtil.isNotEmpty(returnResult)) {
                 try {
-                    this.redisService.set(basePrefix, key, returnResult);
+                    this.redisService.setList(key, returnResult);
                 } catch (Exception var7) {
                     var7.printStackTrace();
                     log.info("写入cache " + key + " 失败");
                 }
-
                 return returnResult;
             }
         }
-
         return null;
-    }*/
+    }
 
 
 }

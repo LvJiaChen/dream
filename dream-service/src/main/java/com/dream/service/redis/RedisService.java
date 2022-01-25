@@ -4,13 +4,16 @@ import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -55,10 +58,6 @@ public class RedisService {
                                     field.setAccessible(true);
                                     field.set(returnResult, DateUtil.parse(String.valueOf(value)));
                                     break;
-                                }else if (field.getType().equals(LocalDateTime.class)){
-                                    field.setAccessible(true);
-                                    field.set(returnResult, DateUtil.parseLocalDateTime(String.valueOf(value)));
-                                    break;
                                 } else if (field.getType().equals(Long.class)){
                                     field.setAccessible(true);
                                     field.set(returnResult,Long.valueOf(String.valueOf(value)));
@@ -84,5 +83,26 @@ public class RedisService {
             }
         }
         return true;
+    }
+
+    public <T> boolean setList(String key, List<T> returnResult) {
+        returnResult.forEach(a->{
+            redisUtils.lPush(key, JSONUtil.toJsonStr(a));
+        });
+        return true;
+    }
+
+    public <T> List<T> getList(String key, Class<T> clazz) throws Exception {
+        List<T> returnResult=new ArrayList<>();
+        if (redisUtils.exists(key)){
+            T bean=clazz.newInstance();
+            Object len=redisUtils.lSize(key);
+            List object=(List)redisUtils.lRange(key,0,Integer.parseInt(String.valueOf(len)));
+            for (Object beanJson: object){
+                bean=JSONUtil.toBean((String) beanJson,clazz);
+                returnResult.add(bean);
+            }
+        }
+        return returnResult;
     }
 }

@@ -11,6 +11,7 @@ import com.dream.common.entity.WmsMaterial;
 import com.dream.common.mapper.WmsMaterialMapper;
 import com.dream.service.IWmsMaterialService;
 import com.dream.service.IWmsSerialNumberService;
+import com.dream.service.redis.CacheListCallback;
 import com.dream.service.redis.CacheObjectCallback;
 import com.dream.service.redis.CacheTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,16 @@ public class WmsMaterialServiceImpl extends ServiceImpl<WmsMaterialMapper, WmsMa
 
     @Override
     public List<WmsMaterial> selectMaterial(Map param) {
+        List<WmsMaterial> materialList= cacheTemplate.listCacheWrapper("测试", WmsMaterial.class, new CacheListCallback() {
+            @Override
+            public List<WmsMaterial> getLatestValues() {
+                QueryWrapper<WmsMaterial> queryWrapper=new QueryWrapper<>();
+                queryWrapper.like("material_name","测试");
+                List<WmsMaterial> materialList=materialMapper.selectList(queryWrapper);
+                return materialList;
+            }
+        });
+
         WmsMaterial material= cacheTemplate.objectCacheWrapper("M000007-20220124", WmsMaterial.class, new CacheObjectCallback() {
             @Override
             public WmsMaterial getLatestValue() {

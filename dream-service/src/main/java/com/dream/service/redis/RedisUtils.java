@@ -150,6 +150,15 @@ public class RedisUtils {
         return list.range(k,l,l1);
     }
     /**
+     * 列表长度获取
+     * @param k
+     * @return
+     */
+    public Object lSize(String k){
+        ListOperations<String, Object> list = redisTemplate.opsForList();
+        return list.size(k);
+    }
+    /**
      * 集合添加
      * @param key
      * @param value
