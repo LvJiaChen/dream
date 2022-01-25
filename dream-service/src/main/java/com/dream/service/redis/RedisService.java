@@ -2,6 +2,7 @@ package com.dream.service.redis;
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -53,6 +54,10 @@ public class RedisService {
                                     if (value instanceof String){
                                         field.set(returnResult,NumberUtil.toBigDecimal((String) value));
                                     }
+                                    break;
+                                }else if (field.getType().equals(LocalDateTime.class)){
+                                    field.setAccessible(true);
+                                    field.set(returnResult, LocalDateTimeUtil.parse(String.valueOf(value)));
                                     break;
                                 }else if (field.getType().equals(Date.class)){
                                     field.setAccessible(true);
