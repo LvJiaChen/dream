@@ -11,10 +11,14 @@ import com.dream.common.entity.WmsMaterial;
 import com.dream.common.mapper.WmsMaterialMapper;
 import com.dream.service.IWmsMaterialService;
 import com.dream.service.IWmsSerialNumberService;
+import com.dream.service.redis.CacheObjectCallback;
+import com.dream.service.redis.CacheTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +35,8 @@ public class WmsMaterialServiceImpl extends ServiceImpl<WmsMaterialMapper, WmsMa
     private WmsMaterialMapper materialMapper;
     @Autowired
     private IWmsSerialNumberService iWmsSerialNumberService;
+    @Autowired
+    private CacheTemplate cacheTemplate;
 
     @Override
     public IPage<WmsMaterial> queryMaterialList(Map param) {
@@ -63,5 +69,19 @@ public class WmsMaterialServiceImpl extends ServiceImpl<WmsMaterialMapper, WmsMa
             //编辑
             materialMapper.updateById(material);
         }
+    }
+
+    @Override
+    public List<WmsMaterial> selectMaterial(Map param) {
+        WmsMaterial material= cacheTemplate.objectCacheWrapper("M000007-20220124", WmsMaterial.class, new CacheObjectCallback() {
+            @Override
+            public WmsMaterial getLatestValue() {
+                QueryWrapper<WmsMaterial> queryWrapper=new QueryWrapper<>();
+                queryWrapper.eq("material_no","M000007-20220124");
+                WmsMaterial material=materialMapper.selectOne(queryWrapper);
+                return material;
+            }
+        });
+        return Arrays.asList(material);
     }
 }

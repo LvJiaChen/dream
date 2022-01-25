@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -64,5 +65,17 @@ public class WmsMaterialController {
     public Result deleteMaterial(@RequestBody Map param) {
         iWmsMaterialService.deleteMaterial(param);
         return Result.ok();
+    }
+
+    /**
+     * 查询物料表信息（下拉选择）
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/selectMaterial")
+    public Result selectMaterial(@RequestBody Map param) {
+        List<WmsMaterial> materials= iWmsMaterialService.selectMaterial(param);
+        return Result.ok(materials);
     }
 }

@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.dream.common.entity.WmsUser;
 import com.dream.service.IWmsUserService;
-import com.dream.web.application.utils.HttpContextUtil;
 import com.dream.web.application.utils.Result;
 import com.dream.web.application.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;

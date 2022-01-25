@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.dream.common.entity.WmsMaterial;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,4 +22,6 @@ public interface IWmsMaterialService extends IService<WmsMaterial> {
     void deleteMaterial(Map param);
 
     void saveMaterial(Map param);
+
+    List<WmsMaterial> selectMaterial(Map param);
 }

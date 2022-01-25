@@ -79,7 +79,7 @@
 
 <script>
 import {reactive, ref} from "vue";
-import {queryMaterialList,deleteMaterial,saveMaterial} from "../api";
+import {queryMaterialList,deleteMaterial,saveMaterial,selectMaterial} from "../api";
 import {ElMessage, ElMessageBox} from "element-plus";
 import moment from "moment";
 
@@ -147,6 +147,9 @@ export default {
 
     // 查询操作
     const handleSearch = () => {
+      selectMaterial({}).then((res) => {
+        ElMessage.success("删除成功");
+      });
       query.pageIndex = 1;
       getData();
     };
