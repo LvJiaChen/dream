@@ -8,3 +8,5 @@
 /dream-mapper/dream-mapper.iml
 /dream-service/dream-service.iml
 /dream-web/dream-web.iml
+/dream-dubbo-service/target/
+/dream-dubbo-service-api/target/

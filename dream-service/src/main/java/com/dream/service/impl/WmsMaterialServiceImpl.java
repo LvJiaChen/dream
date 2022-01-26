@@ -14,6 +14,8 @@ import com.dream.service.IWmsSerialNumberService;
 import com.dream.service.redis.CacheListCallback;
 import com.dream.service.redis.CacheObjectCallback;
 import com.dream.service.redis.CacheTemplate;
+import com.drean.dubbo.service.DubboTestService;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,8 @@ import java.util.Map;
  */
 @Service
 public class WmsMaterialServiceImpl extends ServiceImpl<WmsMaterialMapper, WmsMaterial> implements IWmsMaterialService {
+    @DubboReference
+    private DubboTestService dubboTestService;
     @Autowired
     private WmsMaterialMapper materialMapper;
     @Autowired
@@ -73,7 +77,13 @@ public class WmsMaterialServiceImpl extends ServiceImpl<WmsMaterialMapper, WmsMa
     }
 
     @Override
-    public List<WmsMaterial> selectMaterial(Map param) {
+    public List<WmsMaterial> selectMaterial(Map param) throws Exception {
+        List<WmsMaterial> materials= dubboTestService.queryMaterialByMaterialNo("M000008-20220125");
+        materials.get(0).setMaterialName("cunsumer-dubbo");
+        materialMapper.updateById(materials.get(0));
+        if (true) {
+            throw new Exception("回滚");
+        }
         List<WmsMaterial> materialList= cacheTemplate.listCacheWrapper("测试", WmsMaterial.class, new CacheListCallback() {
             @Override
             public List<WmsMaterial> getLatestValues() {

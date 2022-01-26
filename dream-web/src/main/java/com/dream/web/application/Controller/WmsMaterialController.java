@@ -74,7 +74,7 @@ public class WmsMaterialController {
      * @return
      */
     @PostMapping("/selectMaterial")
-    public Result selectMaterial(@RequestBody Map param) {
+    public Result selectMaterial(@RequestBody Map param) throws Exception {
         List<WmsMaterial> materials= iWmsMaterialService.selectMaterial(param);
         return Result.ok(materials);
     }

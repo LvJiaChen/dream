@@ -23,5 +23,5 @@ public interface IWmsMaterialService extends IService<WmsMaterial> {
 
     void saveMaterial(Map param);
 
-    List<WmsMaterial> selectMaterial(Map param);
+    List<WmsMaterial> selectMaterial(Map param) throws Exception;
 }

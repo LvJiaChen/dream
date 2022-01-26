@@ -1,4 +1,4 @@
-package com.dream.web.application.handler;
+package com.dream.common.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.dream.common.vo.UserInfo;
