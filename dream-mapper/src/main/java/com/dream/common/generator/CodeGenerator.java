@@ -29,11 +29,11 @@ public class CodeGenerator {
         pathInfo.put(OutputFile.mapperXml, "E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\resources\\mapper");
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/wms", "root", "123456")
                 .globalConfig(builder -> {
-                    builder.author("lvxiaozuo") // 设置作者
+                    builder.author("wangcaichao") // 设置作者
                             .dateType(DateType.ONLY_DATE)
                             .enableSwagger()// 开启 swagger 模式
                             .fileOverride() // 覆盖已生成文件
-                            .outputDir("E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\java"); // 指定输出目录
+                            .outputDir("D:\\Users\\dream\\dream-mapper\\src\\main\\java"); // 指定输出目录
                 })
                 .packageConfig(builder -> {
                     builder.parent("com.dream") // 设置父包名
@@ -45,7 +45,7 @@ public class CodeGenerator {
                             .pathInfo(pathInfo);
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("wms_serial_number") // 设置需要生成的表名
+                    builder.addInclude("wms_food_calaire") // 设置需要生成的表名
                             //.addTablePrefix("dream_") // 设置过滤表前缀
                             .entityBuilder()
                             .versionColumnName("version")
@@ -60,5 +60,7 @@ public class CodeGenerator {
                     builder.disable(TemplateType.CONTROLLER,TemplateType.SERVICE,TemplateType.SERVICEIMPL,TemplateType.MAPPER,TemplateType.XML);
                 }).templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();
+
+        System.out.println("成功生成模板");
     }
 }

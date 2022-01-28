@@ -111,6 +111,14 @@ const routes = [
                     title: '仓库管理'
                 },
                 component: () => import (/* webpackChunkName: "editor" */ '../views/WarehouseList.vue')
+            },
+            {
+                path: '/foodCaloriesList',
+                name: 'foodCaloriesList',
+                meta: {
+                    title: '食物管理'
+                },
+                component: () => import (/* webpackChunkName: "editor" */ '../views/foodCaloriesList.vue')
             }
         ]
     }, {
