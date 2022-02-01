@@ -3,7 +3,9 @@ package com.dream.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.dream.common.entity.WmsWarehouse;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dream.common.vo.wms.WmsFoodCalorie;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,4 +23,6 @@ public interface IWmsWarehouseService extends IService<WmsWarehouse> {
     void saveWarehouse(Map param);
 
     void deleteWarehouse(Map param);
+
+    List<WmsFoodCalorie> queryFoodCalorie(Map map);
 }

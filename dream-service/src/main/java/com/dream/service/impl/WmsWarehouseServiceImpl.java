@@ -9,11 +9,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dream.common.entity.WmsWarehouse;
 import com.dream.common.mapper.WmsWarehouseMapper;
+import com.dream.common.mapper.wms.WmsFoodCalorieMapper;
+import com.dream.common.mapper.wms.foodCalorieMapper;
+import com.dream.common.vo.wms.WmsFoodCalorie;
 import com.dream.service.IWmsSerialNumberService;
 import com.dream.service.IWmsWarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +35,9 @@ public class WmsWarehouseServiceImpl extends ServiceImpl<WmsWarehouseMapper, Wms
     private WmsWarehouseMapper wmsWarehouseMapper;
     @Autowired
     private IWmsSerialNumberService iWmsSerialNumberService;
+
+    @Autowired
+    private foodCalorieMapper foodCalorieMapper;
 
     @Override
     public IPage<WmsWarehouse> queryWarehouseList(Map param) throws Exception {
@@ -62,5 +69,10 @@ public class WmsWarehouseServiceImpl extends ServiceImpl<WmsWarehouseMapper, Wms
     @Override
     public void deleteWarehouse(Map param) {
         wmsWarehouseMapper.deleteById((Integer)param.get("id"));
+    }
+
+    @Override
+    public List<WmsFoodCalorie> queryFoodCalorie(Map map) {
+        return foodCalorieMapper.queryFoodCalorie(map);
     }
 }

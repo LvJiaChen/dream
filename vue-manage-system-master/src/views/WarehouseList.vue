@@ -3,7 +3,7 @@
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
-          <i class="el-icon-lx-calendar"></i> 仓库管理
+          <i class="el-icon-lx-calendar"></i> 食物管理
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -17,7 +17,7 @@
       <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
         <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
         <el-table-column prop="code" label="仓库编码"></el-table-column>
-        <el-table-column prop="name" label="仓库名称"></el-table-column>
+        <el-table-column prop="foodName" label="food名称"></el-table-column>
         <el-table-column prop="address" label="地址"></el-table-column>
         <el-table-column prop="creator" label="创建人"></el-table-column>
         <el-table-column prop="createTime" label="创建时间">
@@ -102,8 +102,8 @@ export default {
     const getData = () => {
       queryWarehouseList(query).then((res) => {
         ElMessage.success("查询成功");
-        tableData.value = res.data.records;
-        pageTotal.value = res.data.total;
+        tableData.value = res.data;
+        pageTotal.value = res.data.length
       });
     };
     getData();

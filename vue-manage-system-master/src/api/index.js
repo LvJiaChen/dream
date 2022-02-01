@@ -40,3 +40,6 @@ export const saveWarehouse = data => {
 export const deleteWarehouse = data => {
     return Axios.post(baseUrl+"/wms-warehouse/deleteWarehouse",data);
 };
+export const queryFoodList = data => {
+    return Axios.post(baseUrl+"/wms-food/queryWarehouseList",data);
+};

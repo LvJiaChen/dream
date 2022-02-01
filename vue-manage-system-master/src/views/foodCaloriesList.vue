@@ -9,16 +9,15 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <el-input v-model="query.code" placeholder="仓库编码" class="handle-input mr10"></el-input>
-        <el-input v-model="query.name" placeholder="仓库名称" class="handle-input mr10"></el-input>
+        <el-input v-model="query.name" placeholder="食物名称" class="handle-input mr10"></el-input>
         <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
         <el-button type="primary" icon="el-icon-search" @click="handleAddEdit(null,null)">添加</el-button>
       </div>
       <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
         <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-        <el-table-column prop="code" label="仓库编码"></el-table-column>
-        <el-table-column prop="name" label="仓库名称"></el-table-column>
-        <el-table-column prop="address" label="地址"></el-table-column>
+        <el-table-column prop="foodName" label="食物名称"></el-table-column>
+        <el-table-column prop="foodCalorie" label="食物热量"></el-table-column>
+        <el-table-column prop="foodPicture" label="食物图片"></el-table-column>
         <el-table-column prop="creator" label="创建人"></el-table-column>
         <el-table-column prop="createTime" label="创建时间">
           <template #default="scope">
@@ -42,12 +41,20 @@
     <!-- 添加、编辑弹出框 -->
     <el-dialog title="添加/编辑" v-model="editVisible" width="30%" :before-close="dialogBeforeClose">
       <el-form label-width="90px" :model="form" :rules="rules" ref="formRef">
-        <el-form-item label="仓库名称" prop="name">
-          <el-input v-model="form.name"></el-input>
+        <el-form-item label="食物名称" prop="name">
+          <el-input v-model="form.foodName"></el-input>
         </el-form-item>
-        <el-form-item label="地址" prop="address">
-          <el-input type="textarea" v-model="form.address"></el-input>
+        <el-form-item label="卡路里" prop="address">
+          <el-input type="textarea" v-model="form.foodCalorie"></el-input>
         </el-form-item>
+        <el-form-item label="图片" prop="address">
+          <el-input type="textarea" v-model="form.foodPicture"></el-input>
+        </el-form-item>
+        <el-form-item label="备注" prop="address">
+          <el-input type="textarea" v-model="form.remark"></el-input>
+        </el-form-item>
+
+
       </el-form>
       <template #footer>
                 <span class="dialog-footer">
@@ -62,7 +69,7 @@
 <script>
 import moment from "moment"
 import {reactive, ref} from "vue";
-import {deleteWarehouse, queryWarehouseList, saveWarehouse} from "../api";
+import {deleteWarehouse, queryFoodList, saveWarehouse} from "../api";
 import {ElMessage, ElMessageBox} from "element-plus";
 
 export default {
@@ -100,10 +107,10 @@ export default {
     let formRef=ref(null);
     // 获取表格数据
     const getData = () => {
-      queryWarehouseList(query).then((res) => {
+      queryFoodList(query).then((res) => {
         ElMessage.success("查询成功");
-        tableData.value = res.data.records;
-        pageTotal.value = res.data.total;
+        tableData.value = res.data.result;
+        pageTotal.value = res.data.count
       });
     };
     getData();
@@ -138,10 +145,11 @@ export default {
     const editVisible = ref(false);
     let form = reactive({
       id:null,
-      code: null,
-      name: null,
-      address: null,
-      version:null
+      foodName: null,
+      foodCalorie: null,
+      foodPicture: null,
+      remark:null,
+      version:null,
     });
     const handleAddEdit = (index, row) => {
       if (row!==null){

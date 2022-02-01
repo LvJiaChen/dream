@@ -18,53 +18,32 @@ import java.util.Map;
 
 /**
  * <p>
- * 前端控制器
+ *  前端控制器
  * </p>
  *
  * @author lvxiaozuo
  * @since 2022-01-24
  */
 @Controller
-@RequestMapping("/wms-warehouse")
+@RequestMapping("/wms-food")
 @ResponseBody
-public class WmsWarehouseController {
+public class WmsFoodController {
     @Autowired
     private IWmsWarehouseService iWmsWarehouseService;
 
+    @Autowired
+    private WmsFoodCalorieMapper wmsFoodCalorieMapper;
 
-    /**
-     * 查询物料表数据
-     *
-     * @param
-     * @return
-     */
     @PostMapping("/queryWarehouseList")
     public Result queryWarehouseList(@RequestBody Map param) throws Exception {
-        IPage<WmsWarehouse> materialIPage= iWmsWarehouseService.queryWarehouseList(param);
-        return Result.ok(materialIPage);
-    }
-
-    /**
-     * 保存物料
-     *
-     * @param
-     * @return
-     */
-    @PostMapping("/saveWarehouse")
-    public Result saveWarehouse(@RequestBody Map param) {
-        iWmsWarehouseService.saveWarehouse(param);
-        return Result.ok();
-    }
-
-    /**
-     * 删除物料
-     *
-     * @param
-     * @return
-     */
-    @PostMapping("/deleteWarehouse")
-    public Result deleteWarehouse(@RequestBody Map param) {
-        iWmsWarehouseService.deleteWarehouse(param);
-        return Result.ok();
+        Map map = new HashMap();
+        int pageIndex = (Integer) param.get("pageIndex");
+        if (pageIndex > 1) {
+            pageIndex = pageIndex * 10;
+        }
+        param.put("pageIndex", pageIndex);
+        map.put("count", wmsFoodCalorieMapper.countByExample(null));
+        map.put("result", iWmsWarehouseService.queryFoodCalorie(param));
+        return Result.ok(map);
     }
 }
