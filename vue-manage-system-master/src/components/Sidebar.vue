@@ -112,18 +112,7 @@ export default {
                         title: "404页面",
                     },
                 ],
-            },
-            {
-            icon: "el-icon-lx-people",
-            index: "8",
-            title: "keep1",
-            subs: [
-              {
-                index: "/foodList",
-                title: "食物热量",
-              },
-            ],
-          }
+            }
         ];
 
         const route = useRoute();

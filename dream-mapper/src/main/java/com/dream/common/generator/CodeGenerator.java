@@ -20,14 +20,13 @@ import java.util.Map;
 public class CodeGenerator {
 
     public static void main(String[] args) {
-        String projectPath = System.getProperty("user.dir");
         Map<OutputFile, String> pathInfo = new HashMap<>();
-        pathInfo.put(OutputFile.controller, projectPath + "\\dream-web\\src\\main\\java\\com\\dream\\web\\application\\Controller");
-        pathInfo.put(OutputFile.mapper, projectPath + "\\dream-mapper\\src\\main\\java\\com\\dream\\common\\mapper");
-        pathInfo.put(OutputFile.serviceImpl, projectPath + "\\dream-service\\src\\main\\java\\com\\dream\\service\\impl");
-        pathInfo.put(OutputFile.service, projectPath + "\\dream-service\\src\\main\\java\\com\\dream\\service");
-        pathInfo.put(OutputFile.entity, projectPath + "\\dream-mapper\\src\\main\\java\\com\\dream\\common\\entity");
-        pathInfo.put(OutputFile.mapperXml, projectPath + "\\dream-mapper\\src\\main\\resources\\mapper");
+        pathInfo.put(OutputFile.controller, "E:\\IdeaProject\\dream\\dream-web\\src\\main\\java\\com\\dream\\web\\application\\Controller");
+        pathInfo.put(OutputFile.mapper, "E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\java\\com\\dream\\common\\mapper");
+        pathInfo.put(OutputFile.serviceImpl, "E:\\IdeaProject\\dream\\dream-service\\src\\main\\java\\com\\dream\\service\\impl");
+        pathInfo.put(OutputFile.service, "E:\\IdeaProject\\dream\\dream-service\\src\\main\\java\\com\\dream\\service");
+        pathInfo.put(OutputFile.entity, "E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\java\\com\\dream\\common\\entity");
+        pathInfo.put(OutputFile.mapperXml, "E:\\IdeaProject\\dream\\dream-mapper\\src\\main\\resources\\mapper");
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/wms", "root", "123456")
                 .globalConfig(builder -> {
                     builder.author("lvxiaozuo") // 设置作者
@@ -46,7 +45,7 @@ public class CodeGenerator {
                             .pathInfo(pathInfo);
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("wms_food_calorie") // 设置需要生成的表名
+                    builder.addInclude("wms_serial_number") // 设置需要生成的表名
                             //.addTablePrefix("dream_") // 设置过滤表前缀
                             .entityBuilder()
                             .versionColumnName("version")
@@ -58,7 +57,7 @@ public class CodeGenerator {
                             .enableLombok();
                 })
                 .templateConfig(builder -> {
-                    builder.disable(TemplateType.CONTROLLER, TemplateType.SERVICE, TemplateType.SERVICEIMPL, TemplateType.MAPPER, TemplateType.XML);
+                    builder.disable(TemplateType.CONTROLLER,TemplateType.SERVICE,TemplateType.SERVICEIMPL,TemplateType.MAPPER,TemplateType.XML);
                 }).templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();
     }
