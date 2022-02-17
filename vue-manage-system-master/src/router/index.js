@@ -111,6 +111,14 @@ const routes = [
                     title: '仓库管理'
                 },
                 component: () => import (/* webpackChunkName: "editor" */ '../views/WarehouseList.vue')
+            },
+            {
+                path: '/entryList',
+                name: 'entryList',
+                meta: {
+                    title: '入库管理'
+                },
+                component: () => import (/* webpackChunkName: "editor" */ '../views/EntryList.vue')
             }
         ]
     }, {

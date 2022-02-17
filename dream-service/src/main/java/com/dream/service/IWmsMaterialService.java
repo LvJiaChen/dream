@@ -17,11 +17,13 @@ import java.util.Map;
  */
 public interface IWmsMaterialService extends IService<WmsMaterial> {
 
-    IPage<WmsMaterial> queryMaterialList(Map param);
+    IPage<WmsMaterial> queryMaterialListPage(Map param);
 
     void deleteMaterial(Map param);
 
     void saveMaterial(Map param);
 
     List<WmsMaterial> selectMaterial(Map param);
+
+    List<WmsMaterial> queryMaterialList(Map param);
 }

@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dream.common.entity.WmsMaterial;
+import com.dream.common.entity.WmsWarehouse;
 import com.dream.common.mapper.WmsMaterialMapper;
 import com.dream.service.IWmsMaterialService;
 import com.dream.service.IWmsSerialNumberService;
@@ -40,7 +41,7 @@ public class WmsMaterialServiceImpl extends ServiceImpl<WmsMaterialMapper, WmsMa
     private CacheTemplate cacheTemplate;
 
     @Override
-    public IPage<WmsMaterial> queryMaterialList(Map param) {
+    public IPage<WmsMaterial> queryMaterialListPage(Map param) {
         QueryWrapper<WmsMaterial> queryWrapper=new QueryWrapper<>();
         if (!StrUtil.isBlank((String)param.get("materialNo")))
             queryWrapper.like("material_no",param.get("materialNo"));
@@ -94,5 +95,16 @@ public class WmsMaterialServiceImpl extends ServiceImpl<WmsMaterialMapper, WmsMa
             }
         });
         return Arrays.asList(material);
+    }
+
+    @Override
+    public List<WmsMaterial> queryMaterialList(Map param) {
+        QueryWrapper<WmsMaterial> queryWrapper=new QueryWrapper<>();
+        if (!StrUtil.isBlank((String)param.get("value")))
+            queryWrapper.like("material_name",param.get("value"))
+                    .or().like("brand",param.get("value"))
+                    .or().like("space",param.get("value"));
+        List<WmsMaterial> wmsMaterialList= materialMapper.selectList(queryWrapper);
+        return wmsMaterialList;
     }
 }

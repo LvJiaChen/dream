@@ -14,6 +14,7 @@ import com.dream.service.IWmsWarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,7 +34,7 @@ public class WmsWarehouseServiceImpl extends ServiceImpl<WmsWarehouseMapper, Wms
     private IWmsSerialNumberService iWmsSerialNumberService;
 
     @Override
-    public IPage<WmsWarehouse> queryWarehouseList(Map param) throws Exception {
+    public IPage<WmsWarehouse> queryWarehouseListPage(Map param) throws Exception {
         QueryWrapper<WmsWarehouse> queryWrapper=new QueryWrapper<>();
         if (!StrUtil.isBlank((String)param.get("address")))
             queryWrapper.like("address",param.get("address"));
@@ -62,5 +63,14 @@ public class WmsWarehouseServiceImpl extends ServiceImpl<WmsWarehouseMapper, Wms
     @Override
     public void deleteWarehouse(Map param) {
         wmsWarehouseMapper.deleteById((Integer)param.get("id"));
+    }
+
+    @Override
+    public List<WmsWarehouse> queryWarehouseList(Map param) {
+        QueryWrapper<WmsWarehouse> queryWrapper=new QueryWrapper<>();
+        if (!StrUtil.isBlank((String)param.get("value")))
+            queryWrapper.like("name",param.get("value"));
+        List<WmsWarehouse> wmsWarehouseList= wmsWarehouseMapper.selectList(queryWrapper);
+        return wmsWarehouseList;
     }
 }

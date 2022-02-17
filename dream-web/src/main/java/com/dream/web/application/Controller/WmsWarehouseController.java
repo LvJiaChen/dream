@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,19 +33,19 @@ public class WmsWarehouseController {
 
 
     /**
-     * 查询物料表数据
+     * 查询仓库表数据
      *
      * @param
      * @return
      */
-    @PostMapping("/queryWarehouseList")
-    public Result queryWarehouseList(@RequestBody Map param) throws Exception {
-        IPage<WmsWarehouse> materialIPage= iWmsWarehouseService.queryWarehouseList(param);
-        return Result.ok(materialIPage);
+    @PostMapping("/queryWarehouseListPage")
+    public Result queryWarehouseListPage(@RequestBody Map param) throws Exception {
+        IPage<WmsWarehouse> warehouseIPage= iWmsWarehouseService.queryWarehouseListPage(param);
+        return Result.ok(warehouseIPage);
     }
 
     /**
-     * 保存物料
+     * 保存仓库
      *
      * @param
      * @return
@@ -55,7 +57,7 @@ public class WmsWarehouseController {
     }
 
     /**
-     * 删除物料
+     * 删除仓库
      *
      * @param
      * @return
@@ -64,5 +66,17 @@ public class WmsWarehouseController {
     public Result deleteWarehouse(@RequestBody Map param) {
         iWmsWarehouseService.deleteWarehouse(param);
         return Result.ok();
+    }
+
+    /**
+     * 查询仓库表数据
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/queryWarehouseList")
+    public Result queryWarehouseList(@RequestBody Map param){
+        List<WmsWarehouse> warehouseList= iWmsWarehouseService.queryWarehouseList(param);
+        return Result.ok(warehouseList);
     }
 }

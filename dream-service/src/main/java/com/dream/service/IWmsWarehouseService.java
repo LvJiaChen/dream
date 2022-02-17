@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.dream.common.entity.WmsWarehouse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,9 +17,11 @@ import java.util.Map;
  */
 public interface IWmsWarehouseService extends IService<WmsWarehouse> {
 
-    IPage<WmsWarehouse> queryWarehouseList(Map param) throws Exception;
+    IPage<WmsWarehouse> queryWarehouseListPage(Map param) throws Exception;
 
     void saveWarehouse(Map param);
 
     void deleteWarehouse(Map param);
+
+    List<WmsWarehouse> queryWarehouseList(Map param);
 }

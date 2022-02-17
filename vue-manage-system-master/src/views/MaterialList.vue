@@ -79,7 +79,7 @@
 
 <script>
 import {reactive, ref} from "vue";
-import {queryMaterialList,deleteMaterial,saveMaterial,selectMaterial} from "../api";
+import {queryMaterialListPage,deleteMaterial,saveMaterial,selectMaterial} from "../api";
 import {ElMessage, ElMessageBox} from "element-plus";
 import moment from "moment";
 
@@ -137,7 +137,7 @@ export default {
     let formRef=ref(null);
     // 获取表格数据
     const getData = () => {
-      queryMaterialList(query).then((res) => {
+      queryMaterialListPage(query).then((res) => {
         ElMessage.success("查询成功");
         tableData.value = res.data.records;
         pageTotal.value = res.data.total;

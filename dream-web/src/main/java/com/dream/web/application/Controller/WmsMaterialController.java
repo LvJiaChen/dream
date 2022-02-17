@@ -37,9 +37,9 @@ public class WmsMaterialController {
      * @param
      * @return
      */
-    @PostMapping("/queryMaterialList")
-    public Result queryMaterialList(@RequestBody Map param) {
-        IPage<WmsMaterial> materialIPage= iWmsMaterialService.queryMaterialList(param);
+    @PostMapping("/queryMaterialListPage")
+    public Result queryMaterialListPage(@RequestBody Map param) {
+        IPage<WmsMaterial> materialIPage= iWmsMaterialService.queryMaterialListPage(param);
         return Result.ok(materialIPage);
     }
 
@@ -77,5 +77,17 @@ public class WmsMaterialController {
     public Result selectMaterial(@RequestBody Map param) {
         List<WmsMaterial> materials= iWmsMaterialService.selectMaterial(param);
         return Result.ok(materials);
+    }
+
+    /**
+     * 查询物料表数据
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/queryMaterialList")
+    public Result queryMaterialList(@RequestBody Map param) {
+        List<WmsMaterial> materialIPage= iWmsMaterialService.queryMaterialList(param);
+        return Result.ok(materialIPage);
     }
 }
