@@ -51,6 +51,10 @@ export const queryWarehouseList = data => {
 };
 
 /*入库管理*/
+/*查询入库*/
+export const queryEntryListPage = data => {
+    return Axios.post(baseUrl+"/wms-entry/queryEntryListPage",data);
+};
 /*保存入库单*/
 export const saveEntry = data => {
     return Axios.post(baseUrl+"/wms-entry/saveEntry",data);

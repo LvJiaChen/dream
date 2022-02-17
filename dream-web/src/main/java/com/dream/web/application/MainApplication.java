@@ -20,10 +20,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class MainApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext context= SpringApplication.run(MainApplication.class, args);
-        String[] names=context.getBeanDefinitionNames();
+/*        String[] names=context.getBeanDefinitionNames();
         for (String name : names) {
             System.out.println(name);
-        }
+        }*/
         System.out.println("********************************************WEB启动完成***************************************");
     }
 

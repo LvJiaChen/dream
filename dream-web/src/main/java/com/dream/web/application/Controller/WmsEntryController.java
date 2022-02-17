@@ -1,6 +1,9 @@
 package com.dream.web.application.Controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.dream.common.entity.WmsMaterial;
+import com.dream.common.vo.WmsEntryPageVo;
 import com.dream.service.IWmsEntryService;
 import com.dream.web.application.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,18 @@ public class WmsEntryController {
     @Autowired
     private IWmsEntryService entryService;
 
+
+    /**
+     * 查询入库表数据
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/queryEntryListPage")
+    public Result queryEntryListPage(@RequestBody Map param) {
+        IPage<WmsEntryPageVo> entryPageVoIPage= entryService.queryEntryListPage(param);
+        return Result.ok(entryPageVoIPage);
+    }
 
     /**
      * 保存物料

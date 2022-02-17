@@ -141,7 +141,7 @@
 <script>
 import moment from "moment"
 import {reactive, ref} from "vue";
-import {queryMaterialList, queryWarehouseList, queryWarehouseListPage, saveEntry} from "../api";
+import {queryMaterialList, queryWarehouseList, queryEntryListPage, saveEntry} from "../api";
 import {ElMessage, ElMessageBox} from "element-plus";
 
 export default {
@@ -216,7 +216,7 @@ export default {
     };
     // 获取表格数据
     const getData = () => {
-      queryWarehouseListPage(query).then((res) => {
+      queryEntryListPage(query).then((res) => {
         ElMessage.success("查询成功");
         tableData.value = res.data.records;
         pageTotal.value = res.data.total;
@@ -253,6 +253,7 @@ export default {
         form.entryDate=new Date();
         form.code=null;
         form.warehouseCode=null;
+        entryData.value=[];
       }
       const newTabName = `${++tabIndex}`
       editableTabs.value.push({
@@ -293,7 +294,7 @@ export default {
     const quantityChange=(row)=>{
       row.money=row.quantity*row.price;
     };
-    const save = () => {debugger
+    const save = () => {
       formRef.value.validate((valid) => {
         if (valid) {
           if (entryData.value.length===0){
@@ -303,6 +304,7 @@ export default {
           form.entryData=entryData.value;
           saveEntry(form).then((res) => {
             ElMessage.success("保存成功");
+            removeTab(tab.value);
             getData();
           });
         }

@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dream.common.mapper.WmsEntryMapper">
-
+    <select id="queryEntryListPage" resultType="com.dream.common.vo.WmsEntryPageVo">
+        select ew.code,
+        ew.entry_date "entryDate",
+        ew.warehouse_code       "warehouseCode",
+           wms_warehouse.name   "warehouseName",
+           ew.creator,
+           sum(ew.money)           "moneyAll"
+        from wms_entry ew
+                 left join wms_warehouse on ew.warehouse_code = wms_warehouse.code
+                 <where>
+                     <if test="code!=null and code!=''">
+                         and ew.code=#{code}
+                     </if>
+                     <if test="materialName!=null and materialName!=''">
+                         and ew.material_name=#{materialName}
+                     </if>
+                 </where>
+        group by ew.code, ew.warehouse_code, wms_warehouse.name, ew.creator
+        order by ew.id desc
+    </select>
 </mapper>
