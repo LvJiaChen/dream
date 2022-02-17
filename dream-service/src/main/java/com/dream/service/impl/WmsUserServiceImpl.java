@@ -1,6 +1,6 @@
 package com.dream.service.impl;
 
-import com.alibaba.fastjson.JSON;
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dream.common.entity.WmsUser;
 import com.dream.common.mapper.WmsUserMapper;
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -33,9 +33,9 @@ public class WmsUserServiceImpl extends ServiceImpl<WmsUserMapper, WmsUser> impl
         //用UUID生成token
         String token = UUID.randomUUID().toString();
         //当前时间
-        LocalDateTime now = LocalDateTime.now();
+        Date now = new Date();
         //过期时间
-        LocalDateTime expireTime = now.plusHours(EXPIRE);
+        Date expireTime =  DateUtil.offsetHour(now, EXPIRE);
         //保存到数据库
         user.setLoginTime(now);
         user.setExpireTime(expireTime);

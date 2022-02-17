@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author lvxiaozuo
@@ -48,7 +48,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
         //3. token失效
-        if (user.getExpireTime().isBefore(LocalDateTime.now())) {
+        if (user.getExpireTime().compareTo(new Date())<0) {
             setReturn(response,401,"用户登录凭证已失效，请重新登录");
             return false;
         }

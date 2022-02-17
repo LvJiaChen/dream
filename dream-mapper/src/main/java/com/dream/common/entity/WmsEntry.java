@@ -20,7 +20,7 @@ import lombok.Setter;
  * </p>
  *
  * @author lvxiaozuo
- * @since 2022-01-25
+ * @since 2022-02-17
  */
 @Getter
 @Setter
@@ -62,6 +62,9 @@ public class WmsEntry implements Serializable {
 
     @ApiModelProperty("仓库编码")
     private String warehouseCode;
+
+    @ApiModelProperty("状态（入库、冲销）")
+    private String status;
 
     @TableField(fill = FieldFill.INSERT)
     @Version

@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -19,7 +19,7 @@ import lombok.Setter;
  * </p>
  *
  * @author lvxiaozuo
- * @since 2022-01-23
+ * @since 2022-02-17
  */
 @Getter
 @Setter
@@ -58,13 +58,13 @@ public class WmsSerialNumber implements Serializable {
     private String creator;
 
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private Date createTime;
 
     @TableField(fill = FieldFill.UPDATE)
     private String updater;
 
     @TableField(fill = FieldFill.UPDATE)
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
 
 }

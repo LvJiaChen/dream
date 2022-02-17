@@ -5,7 +5,7 @@ import com.dream.common.vo.UserInfo;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author lvxiaozuo
@@ -15,14 +15,14 @@ import java.time.LocalDateTime;
 public class FieldFillMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
-        this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
+        this.strictInsertFill(metaObject, "createTime", Date.class, new Date());
         this.setFieldValByName("creator", UserInfo.getUser().getUserNo(), metaObject);
         this.setFieldValByName("version",1,metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("updateTime", new Date(), metaObject);
         this.setFieldValByName("updater", UserInfo.getUser().getUserNo(), metaObject);
     }
 }

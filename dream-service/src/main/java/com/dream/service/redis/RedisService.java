@@ -1,8 +1,6 @@
 package com.dream.service.redis;
 
-import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,18 +43,14 @@ public class RedisService {
                                     field.setAccessible(true);
                                     field.set(returnResult,String.valueOf(value));
                                     break;
-                                }else if (field.getType().equals(BigDecimal.class)){
+                                }else if (field.getType().equals(BigDecimal.class)) {
                                     field.setAccessible(true);
-                                    if (value instanceof Number){
-                                        field.set(returnResult,NumberUtil.toBigDecimal((Number) value));
+                                    if (value instanceof Number) {
+                                        field.set(returnResult, NumberUtil.toBigDecimal((Number) value));
                                     }
-                                    if (value instanceof String){
-                                        field.set(returnResult,NumberUtil.toBigDecimal((String) value));
+                                    if (value instanceof String) {
+                                        field.set(returnResult, NumberUtil.toBigDecimal((String) value));
                                     }
-                                    break;
-                                }else if (field.getType().equals(LocalDateTime.class)){
-                                    field.setAccessible(true);
-                                    field.set(returnResult, LocalDateTimeUtil.parse(String.valueOf(value)));
                                     break;
                                 }else if (field.getType().equals(Date.class)){
                                     field.setAccessible(true);
