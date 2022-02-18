@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public interface IWmsEntryService extends IService<WmsEntry> {
 
-    void saveEntry(Map param) throws Exception;
+    void saveEntry(Map param);
 
     IPage<WmsEntryPageVo> queryEntryListPage(Map param);
 

@@ -51,7 +51,7 @@ public class WmsEntryController {
      * @return
      */
     @PostMapping("/saveEntry")
-    public Result saveEntry(@RequestBody Map param) throws Exception {
+    public Result saveEntry(@RequestBody Map param){
         entryService.saveEntry(param);
         return Result.ok();
     }

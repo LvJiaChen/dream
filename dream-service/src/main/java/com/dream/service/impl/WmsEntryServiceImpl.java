@@ -2,6 +2,7 @@ package com.dream.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,11 +44,19 @@ public class WmsEntryServiceImpl extends ServiceImpl<WmsEntryMapper, WmsEntry> i
 
     @Override
     @Transactional(rollbackFor=Exception.class)
-    public void saveEntry(Map param) throws Exception{
+    public void saveEntry(Map param){
         List<WmsEntry> entryList= ListMapUtils.toListBean((List<Map>) param.get("entryData"),WmsEntry.class);
         String code= iWmsSerialNumberService.generateSerialNumberByModelCode("wms_entry_code");
         List<WmsStock> stocks=new ArrayList<>();
         entryList.forEach(a->{
+            //校验物料编码是否为空
+            if (StrUtil.isBlank(a.getMaterialNo())){
+                throw new RuntimeException("物料编码不能为空");
+            }
+            //入库数量不能为0校验
+            if (a.getQuantity().compareTo(BigDecimal.ZERO)==0){
+                throw new RuntimeException("物料："+a.getMaterialNo()+"入库数量不能等于0");
+            }
             String batch= iWmsSerialNumberService.generateSerialNumberByModelCode("wms_entry_batch");
             a.setCode(code);
             a.setBatch(batch);
