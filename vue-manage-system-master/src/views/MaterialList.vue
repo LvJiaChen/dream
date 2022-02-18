@@ -166,8 +166,8 @@ export default {
         type: "warning",
       })
           .then(() => {
-            tableData.value.splice(index, 1);
             deleteMaterial({id:row.id}).then((res) => {
+              tableData.value.splice(index, 1);
               ElMessage.success("删除成功");
             });
           })

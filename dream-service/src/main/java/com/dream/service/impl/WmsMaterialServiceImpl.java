@@ -2,13 +2,15 @@ package com.dream.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.dream.common.entity.WmsEntry;
 import com.dream.common.entity.WmsMaterial;
-import com.dream.common.entity.WmsWarehouse;
+import com.dream.common.mapper.WmsEntryMapper;
 import com.dream.common.mapper.WmsMaterialMapper;
 import com.dream.service.IWmsMaterialService;
 import com.dream.service.IWmsSerialNumberService;
@@ -39,6 +41,8 @@ public class WmsMaterialServiceImpl extends ServiceImpl<WmsMaterialMapper, WmsMa
     private IWmsSerialNumberService iWmsSerialNumberService;
     @Autowired
     private CacheTemplate cacheTemplate;
+    @Autowired
+    private WmsEntryMapper wmsEntryMapper;
 
     @Override
     public IPage<WmsMaterial> queryMaterialListPage(Map param) {
@@ -55,6 +59,13 @@ public class WmsMaterialServiceImpl extends ServiceImpl<WmsMaterialMapper, WmsMa
 
     @Override
     public void deleteMaterial(Map param) {
+        WmsMaterial material= materialMapper.selectById((Integer)param.get("id"));
+        QueryWrapper<WmsEntry> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("material_no",material.getMaterialNo());
+        List<WmsEntry> entryList=wmsEntryMapper.selectList(queryWrapper);
+        if (CollUtil.isNotEmpty(entryList)){
+            throw new RuntimeException("该物料已入库不能删除");
+        }
         materialMapper.deleteById((Integer)param.get("id"));
     }
 
