@@ -63,3 +63,17 @@ export const saveEntry = data => {
 export const queryEntryDetail = data => {
     return Axios.post(baseUrl+"/wms-entry/queryEntryDetail",data);
 };
+
+/*入库管理*/
+/*查询入库*/
+export const queryRequisitionListPage = data => {
+    return Axios.post(baseUrl+"/wms-requisition/queryRequisitionListPage",data);
+};
+/*保存入库单*/
+export const saveRequisition = data => {
+    return Axios.post(baseUrl+"/wms-requisition/saveRequisition",data);
+};
+/*查询入库单的物料明细*/
+export const queryRequisitionDetail = data => {
+    return Axios.post(baseUrl+"/wms-requisition/queryRequisitionDetail",data);
+};
