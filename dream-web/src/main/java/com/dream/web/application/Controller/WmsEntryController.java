@@ -2,7 +2,7 @@ package com.dream.web.application.Controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.dream.common.entity.WmsMaterial;
+import com.dream.common.vo.WmsEntryDetailVo;
 import com.dream.common.vo.WmsEntryPageVo;
 import com.dream.service.IWmsEntryService;
 import com.dream.web.application.utils.Result;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,8 +51,20 @@ public class WmsEntryController {
      * @return
      */
     @PostMapping("/saveEntry")
-    public Result saveEntry(@RequestBody Map param) {
+    public Result saveEntry(@RequestBody Map param) throws Exception {
         entryService.saveEntry(param);
         return Result.ok();
+    }
+
+    /**
+     * 查询入库单物料明细
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/queryEntryDetail")
+    public Result queryEntryDetail(@RequestBody Map param) {
+        List<WmsEntryDetailVo> entryDetailVos= entryService.queryEntryDetail(param);
+        return Result.ok(entryDetailVos);
     }
 }

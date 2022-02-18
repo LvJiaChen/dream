@@ -69,7 +69,8 @@ public class WmsWarehouseServiceImpl extends ServiceImpl<WmsWarehouseMapper, Wms
     public List<WmsWarehouse> queryWarehouseList(Map param) {
         QueryWrapper<WmsWarehouse> queryWrapper=new QueryWrapper<>();
         if (!StrUtil.isBlank((String)param.get("value")))
-            queryWrapper.like("name",param.get("value"));
+            queryWrapper.like("name",param.get("value"))
+            .or().like("code",param.get("value"));
         List<WmsWarehouse> wmsWarehouseList= wmsWarehouseMapper.selectList(queryWrapper);
         return wmsWarehouseList;
     }

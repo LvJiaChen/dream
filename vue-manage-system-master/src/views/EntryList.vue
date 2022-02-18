@@ -16,18 +16,19 @@
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             <el-button type="primary" icon="el-icon-search" @click="handleAddEdit(null,null,'添加')">添加</el-button>
           </div>
-          <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
-            <el-table-column prop="code" label="入库单号"></el-table-column>
+          <el-table :data="tableData" border stripe class="table" ref="multipleTable" header-cell-class-name="table-header">
+            <el-table-column prop="code" label="入库单号" width="150px"></el-table-column>
             <el-table-column prop="entryDate" label="入库时间">
               <template #default="scope">
                 {{operatingTime_yyyyMMDD(scope.row.entryDate)}}
               </template>
             </el-table-column>
-            <el-table-column prop="warehouseCode" label="仓库编码"></el-table-column>
+            <el-table-column prop="warehouseCode" label="仓库编码" width="150px"></el-table-column>
             <el-table-column prop="warehouseName" label="仓库名称"></el-table-column>
+            <el-table-column prop="materialNameConcat" label="物料名称" width="400px"></el-table-column>
             <el-table-column prop="moneyAll" label="入库总金额"></el-table-column>
             <el-table-column prop="creator" label="创建人"></el-table-column>
-            <el-table-column prop="createTime" label="创建时间">
+            <el-table-column prop="createTime" label="创建时间" width="150px">
               <template #default="scope">
                 {{operatingTime(scope.row.createTime)}}
               </template>
@@ -51,14 +52,15 @@
         >
           <el-form :inline="true" label-width="90px" :model="form" :rules="rules" ref="formRef">
             <el-form-item>
-              <el-button type="primary" @click="save">保 存</el-button>
+              <el-button type="primary" @click="save" v-if="!isAdd">保 存</el-button>
             </el-form-item>
             <br>
             <el-form-item label="入库单号">
-              <el-input v-model="form.code" placeholder="系统自动生成" disabled></el-input>
+              <el-input v-model="form.code" placeholder="系统自动生成" readonly></el-input>
             </el-form-item>
             <el-form-item label="入库时间" prop="entryDate">
               <el-date-picker
+                  :readonly="isAdd"
                   v-model="form.entryDate"
                   type="date"
                   placeholder="请输入日期"
@@ -68,6 +70,7 @@
             </el-form-item>
             <el-form-item label="仓库名称" prop="warehouseCode">
               <el-select v-model="form.warehouseCode"
+                         :disabled="isAdd"
                          filterable
                          remote
                          :remote-method="queryWarehouseData"
@@ -86,14 +89,23 @@
             </el-form-item>
             <br>
             <el-form-item>
-              <el-button type="primary" @click="addMaterial">添 加</el-button>
+              <el-button type="primary" v-if="!isAdd" @click="addMaterial">添 加</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" v-if="!isAdd" @click="deleteMaterial">删 除</el-button>
             </el-form-item>
           </el-form>
           <!--表格添加-->
-          <el-table :data="entryData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
+          <el-table :data="entryData" border highlight-current-row
+                    class="table" ref="multipleTable"
+                    header-cell-class-name="table-header"
+                    @row-click="onRowClick"
+                    :row-class-name="tableRowClassName">
+            <el-table-column type="index" width="50" />
             <el-table-column label="物料编码">
               <template #default="scope">
                 <el-select v-model="scope.row.materialNo"
+                           :disabled="isAdd"
                            filterable
                            remote
                            :remote-method="queryMaterialData"
@@ -123,7 +135,7 @@
             </el-table-column>
             <el-table-column label="数量" width="250">
               <template #default="scope">
-                <el-input-number v-model="scope.row.quantity" :min="0" precision="4" @change="quantityChange(scope.row)"></el-input-number>
+                <el-input-number  :disabled="isAdd" v-model="scope.row.quantity" :min="0" precision="4" @change="quantityChange(scope.row)"></el-input-number>
               </template>
             </el-table-column>
             <el-table-column prop="unit" label="单位" width="100"></el-table-column>
@@ -141,8 +153,8 @@
 <script>
 import moment from "moment"
 import {reactive, ref} from "vue";
-import {queryMaterialList, queryWarehouseList, queryEntryListPage, saveEntry} from "../api";
-import {ElMessage, ElMessageBox} from "element-plus";
+import {queryMaterialList, queryWarehouseList, queryEntryListPage,queryEntryDetail, saveEntry} from "../api";
+import {ElMessage} from "element-plus";
 
 export default {
   name: "WarehouseList",
@@ -150,6 +162,7 @@ export default {
     const tab=ref("first")
     let tabIndex = 0
     const editableTabs = ref([]);
+    let isAdd=ref(false);
     const query = reactive({
       code: null,
       name: null,
@@ -245,11 +258,19 @@ export default {
 
     const handleAddEdit = (index, row,type) => {
       if (row!==null){
+        isAdd.value=true;
+        queryWarehouseList({"value":row.warehouseCode}).then((res) => {
+          warehouseData.value = res.data;
+        });
         //编辑
         Object.keys(form).forEach((item) => {
           form[item] = row[item];
         });
+        queryEntryDetail({code:row.code}).then((res)=>{
+          entryData.value=res.data;
+        });
       }else {
+        isAdd.value=false;
         form.entryDate=new Date();
         form.code=null;
         form.warehouseCode=null;
@@ -291,6 +312,17 @@ export default {
         money:0
       })
     };
+    const currentRowIndex = ref();
+    const tableRowClassName=({row, rowIndex})=>{
+      row.row_index=rowIndex;
+    };
+    const onRowClick=(row, event, column)=>{
+      currentRowIndex.value=row.row_index;
+    };
+    const deleteMaterial=()=>{
+      entryData.value.splice(currentRowIndex.value,1)
+    };
+
     const quantityChange=(row)=>{
       row.money=row.quantity*row.price;
     };
@@ -328,6 +360,7 @@ export default {
       warehouseData,
       materialData,
       entryData,
+      isAdd,
       queryWarehouseData,
       queryMaterialData,
       materialChange,
@@ -339,7 +372,10 @@ export default {
       handlePageChange,
       handleAddEdit,
       save,
-      addMaterial
+      addMaterial,
+      deleteMaterial,
+      tableRowClassName,
+      onRowClick
     };
   },
 }

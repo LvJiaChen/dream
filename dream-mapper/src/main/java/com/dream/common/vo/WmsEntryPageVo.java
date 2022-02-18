@@ -11,10 +11,19 @@ public class WmsEntryPageVo {
     private String code;
     private Date entryDate;
     private String warehouseCode;
+    private String materialNameConcat;
     private String warehouseName;
     private BigDecimal moneyAll;
     private String creator;
     private Date createTime;
+
+    public String getMaterialNameConcat() {
+        return materialNameConcat;
+    }
+
+    public void setMaterialNameConcat(String materialNameConcat) {
+        this.materialNameConcat = materialNameConcat;
+    }
 
     public String getCode() {
         return code;

@@ -4,21 +4,41 @@
     <select id="queryEntryListPage" resultType="com.dream.common.vo.WmsEntryPageVo">
         select ew.code,
         ew.entry_date "entryDate",
-        ew.warehouse_code       "warehouseCode",
-           wms_warehouse.name   "warehouseName",
-           ew.creator,
-           sum(ew.money)           "moneyAll"
+        GROUP_CONCAT(ew.material_name separator ';') "materialNameConcat",
+        ew.warehouse_code "warehouseCode",
+        wms_warehouse.name "warehouseName",
+        ew.creator,
+        ew.create_time "createTime",
+        sum(ew.money) "moneyAll"
         from wms_entry ew
-                 left join wms_warehouse on ew.warehouse_code = wms_warehouse.code
-                 <where>
-                     <if test="code!=null and code!=''">
-                         and ew.code=#{code}
-                     </if>
-                     <if test="materialName!=null and materialName!=''">
-                         and ew.material_name=#{materialName}
-                     </if>
-                 </where>
+        left join wms_warehouse on ew.warehouse_code = wms_warehouse.code
+        <where>
+            <if test="code!=null and code!=''">
+                and ew.code=#{code}
+            </if>
+            <if test="materialName!=null and materialName!=''">
+                and ew.material_name=#{materialName}
+            </if>
+        </where>
         group by ew.code, ew.warehouse_code, wms_warehouse.name, ew.creator
         order by ew.id desc
+    </select>
+
+    <select id="queryEntryDetail" parameterType="java.util.Map" resultType="com.dream.common.vo.WmsEntryDetailVo">
+        select wms_entry.material_no   "materialNo",
+               wms_entry.material_name "materialName",
+               wm.brand,
+               wm.space,
+               wms_entry.price,
+               wms_entry.quantity,
+               wms_entry.unit,
+               wms_entry.money
+        from wms_entry
+                 left join wms_material wm on wms_entry.material_no = wm.material_no
+                 <where>
+                     <if test="code!=null and code!=''">
+                         and wms_entry.code=#{code}
+                     </if>
+                 </where>
     </select>
 </mapper>

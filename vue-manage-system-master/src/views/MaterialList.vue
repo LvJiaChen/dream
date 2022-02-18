@@ -14,7 +14,7 @@
         <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
         <el-button type="primary" icon="el-icon-search" @click="handleAddEdit(null,null)">添加</el-button>
       </div>
-      <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
+      <el-table :data="tableData" stripe border class="table" ref="multipleTable" header-cell-class-name="table-header">
         <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
         <el-table-column prop="materialNo" label="物料编码" width="170"></el-table-column>
         <el-table-column prop="materialName" label="物料名称" width="170"></el-table-column>
