@@ -127,6 +127,14 @@ const routes = [
                     title: '领料单管理'
                 },
                 component: () => import (/* webpackChunkName: "editor" */ '../views/RequisitionList.vue')
+            },
+            {
+                path: '/deliverList',
+                name: 'deliverList',
+                meta: {
+                    title: '出库管理'
+                },
+                component: () => import (/* webpackChunkName: "editor" */ '../views/DeliverList.vue')
             }
         ]
     }, {

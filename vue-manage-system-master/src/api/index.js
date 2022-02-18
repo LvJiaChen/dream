@@ -64,16 +64,16 @@ export const queryEntryDetail = data => {
     return Axios.post(baseUrl+"/wms-entry/queryEntryDetail",data);
 };
 
-/*入库管理*/
-/*查询入库*/
+/*领料单管理*/
+/*查询领料单*/
 export const queryRequisitionListPage = data => {
     return Axios.post(baseUrl+"/wms-requisition/queryRequisitionListPage",data);
 };
-/*保存入库单*/
+/*保存领料单*/
 export const saveRequisition = data => {
     return Axios.post(baseUrl+"/wms-requisition/saveRequisition",data);
 };
-/*查询入库单的物料明细*/
+/*查询领料单的物料明细*/
 export const queryRequisitionDetail = data => {
     return Axios.post(baseUrl+"/wms-requisition/queryRequisitionDetail",data);
 };

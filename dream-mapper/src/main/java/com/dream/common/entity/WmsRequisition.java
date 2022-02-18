@@ -20,7 +20,7 @@ import lombok.Setter;
  * </p>
  *
  * @author lvxiaozuo
- * @since 2022-01-25
+ * @since 2022-02-18
  */
 @Getter
 @Setter
@@ -50,6 +50,12 @@ public class WmsRequisition implements Serializable {
 
     @ApiModelProperty("申请时间")
     private Date requisitionDate;
+
+    @ApiModelProperty("已出库数量")
+    private BigDecimal deliverQuantity;
+
+    @ApiModelProperty("状态（未出库，已出库，部分出库）")
+    private String status;
 
     @TableField(fill = FieldFill.INSERT)
     @Version

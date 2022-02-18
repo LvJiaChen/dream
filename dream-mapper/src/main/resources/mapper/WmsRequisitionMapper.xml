@@ -27,7 +27,9 @@
         wm.space,
         wm.price,
         wms_requisition.quantity,
-        wms_requisition.unit
+        wms_requisition.unit,
+        wms_requisition.status,
+        wms_requisition.deliver_quantity "deliverQuantity"
         from wms_requisition
         left join wms_material wm on wms_requisition.material_no = wm.material_no
         <where>

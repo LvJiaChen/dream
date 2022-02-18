@@ -14,7 +14,25 @@ public class WmsRequisitionDetailVo {
     private String space;
     private BigDecimal price;
     private BigDecimal quantity;
+    private BigDecimal deliverQuantity;
+    private String status;
     private String unit;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public BigDecimal getDeliverQuantity() {
+        return deliverQuantity;
+    }
+
+    public void setDeliverQuantity(BigDecimal deliverQuantity) {
+        this.deliverQuantity = deliverQuantity;
+    }
 
     public BigDecimal getPrice() {
         return price;

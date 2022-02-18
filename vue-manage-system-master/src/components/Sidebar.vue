@@ -72,6 +72,11 @@ export default {
       },
       {
         icon: "el-icon-lx-copy",
+        index: "/deliverList",
+        title: "物料出库",
+      },
+      {
+        icon: "el-icon-lx-copy",
         index: "/tabs",
         title: "tab选项卡",
       },

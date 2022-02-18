@@ -3,28 +3,30 @@
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
-          <i class="el-icon-lx-calendar"></i> 领料单管理
+          <i class="el-icon-lx-calendar"></i> 物料出库
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="container">
       <el-tabs v-model="tab"  @tab-remove="removeTab">
-        <el-tab-pane label="领料单查询" name="first">
+        <el-tab-pane label="出库查询" name="first">
           <div class="handle-box">
-            <el-input v-model="query.code" placeholder="申请单号" class="handle-input mr10"></el-input>
+            <el-input v-model="query.code" placeholder="出库单号" class="handle-input mr10"></el-input>
             <el-input v-model="query.materialName" placeholder="物料名称" class="handle-input mr10"></el-input>
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             <el-button type="primary" icon="el-icon-search" @click="handleAddEdit(null,null,'添加')">添加</el-button>
           </div>
           <el-table :data="tableData" border stripe class="table" ref="multipleTable" header-cell-class-name="table-header">
-            <el-table-column prop="code" label="申请单号" width="150px"></el-table-column>
-            <el-table-column prop="requisitionDate" label="申请时间">
+            <el-table-column prop="code" label="出库单号" width="150px"></el-table-column>
+            <el-table-column prop="deliverDate" label="出库时间">
               <template #default="scope">
-                {{operatingTime_yyyyMMDD(scope.row.requisitionDate)}}
+                {{operatingTime_yyyyMMDD(scope.row.deliverDate)}}
               </template>
             </el-table-column>
+            <el-table-column prop="warehouseCode" label="仓库编码" width="150px"></el-table-column>
+            <el-table-column prop="warehouseName" label="仓库名称"></el-table-column>
             <el-table-column prop="materialNameConcat" label="物料名称" width="400px"></el-table-column>
-            <el-table-column prop="status" label="状态" width="100px"></el-table-column>
+            <el-table-column prop="moneyAll" label="出库总金额"></el-table-column>
             <el-table-column prop="creator" label="创建人"></el-table-column>
             <el-table-column prop="createTime" label="创建时间" width="150px">
               <template #default="scope">
@@ -34,7 +36,6 @@
             <el-table-column label="操作" width="180" align="center">
               <template #default="scope">
                 <el-button type="text" icon="el-icon-edit" @click="handleAddEdit(scope.$index, scope.row,'查看')">查看</el-button>
-                <el-button type="text" icon="el-icon-edit" @click="handleAddEdit(scope.$index, scope.row,'修改')">修改</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -54,18 +55,37 @@
               <el-button type="primary" @click="save" v-if="!isAdd">保 存</el-button>
             </el-form-item>
             <br>
-            <el-form-item label="申请单号">
+            <el-form-item label="出库单号">
               <el-input v-model="form.code" placeholder="系统自动生成" readonly></el-input>
             </el-form-item>
-            <el-form-item label="申请时间" prop="requisitionDate">
+            <el-form-item label="出库时间" prop="deliverDate">
               <el-date-picker
                   :readonly="isAdd"
-                  v-model="form.requisitionDate"
+                  v-model="form.deliverDate"
                   type="date"
                   placeholder="请输入日期"
                   :default-value="new Date()"
               >
               </el-date-picker>
+            </el-form-item>
+            <el-form-item label="仓库名称" prop="warehouseCode">
+              <el-select v-model="form.warehouseCode"
+                         :disabled="isAdd"
+                         filterable
+                         remote
+                         :remote-method="queryWarehouseData"
+                         class="m-2"
+                         placeholder="请输入仓库"
+                         size="large">
+                <el-option
+                    v-for="item in warehouseData"
+                    :key="item.code"
+                    :label="item.name"
+                    :value="item.code"
+                >
+                  {{ item.name }}
+                </el-option>
+              </el-select>
             </el-form-item>
             <br>
             <el-form-item>
@@ -76,7 +96,7 @@
             </el-form-item>
           </el-form>
           <!--表格添加-->
-          <el-table :data="requisitionData" border highlight-current-row
+          <el-table :data="deliverData" border highlight-current-row
                     class="table" ref="multipleTable"
                     header-cell-class-name="table-header"
                     @row-click="onRowClick"
@@ -115,16 +135,13 @@
             </el-table-column>
             <el-table-column label="数量" width="250">
               <template #default="scope">
-                <el-input-number  :disabled="isAdd" v-model="scope.row.quantity" :min="0" precision="4"></el-input-number>
-              </template>
-            </el-table-column>
-            <el-table-column label="已出库数量" width="250" v-if="isAdd">
-              <template #default="scope">
-                <el-input-number  :disabled="isAdd" v-model="scope.row.deliverQuantity" :min="0" precision="4"></el-input-number>
+                <el-input-number  :disabled="isAdd" v-model="scope.row.quantity" :min="0" precision="4" @change="quantityChange(scope.row)"></el-input-number>
               </template>
             </el-table-column>
             <el-table-column prop="unit" label="单位" width="100"></el-table-column>
-            <el-table-column prop="status" label="状态" width="100" v-if="isAdd"></el-table-column>
+            <el-table-column label="金额" width="100">
+              <template #default="scope">￥{{ scope.row.money }}</template>
+            </el-table-column>
           </el-table>
 
         </el-tab-pane>
@@ -136,7 +153,7 @@
 <script>
 import moment from "moment"
 import {reactive, ref} from "vue";
-import {queryMaterialList, queryRequisitionListPage,queryRequisitionDetail, saveRequisition} from "../api";
+import {queryMaterialList, queryWarehouseList, queryEntryListPage,queryEntryDetail, saveEntry} from "../api";
 import {ElMessage} from "element-plus";
 
 export default {
@@ -152,21 +169,39 @@ export default {
       pageIndex: 1,
       pageSize: 10,
     });
+    const warehouseData=ref([]);
     const materialData=ref([]);
     const tableData = ref([]);
     const pageTotal = ref(0);
     const rules = {
-      requisitionDate: [
+      deliverDate: [
         {
           required: true,
-          message: '请输入申请时间',
+          message: '请输入出库时间',
           trigger: 'blur',
         }
+      ],
+      warehouseCode:[
+        {
+          required: true,
+          message: '请选择仓库',
+          trigger: 'blur',
+        },
       ]
     }
     let formRef=ref(null);
-    const requisitionData=ref([])
+    const deliverData=ref([])
 
+    // 获取仓库数据
+    const queryWarehouseData = (query) => {
+      if (query) {
+        queryWarehouseList({"value":query}).then((res) => {
+          warehouseData.value = res.data;
+        });
+      } else {
+        warehouseData.value = []
+      }
+    };
 
     // 获取物料数据
     const queryMaterialData = (query) => {
@@ -194,7 +229,7 @@ export default {
     };
     // 获取表格数据
     const getData = () => {
-      queryRequisitionListPage(query).then((res) => {
+      queryEntryListPage(query).then((res) => {
         ElMessage.success("查询成功");
         tableData.value = res.data.records;
         pageTotal.value = res.data.total;
@@ -216,29 +251,30 @@ export default {
 
     // 表格编辑时弹窗和保存
     let form = reactive({
-      requisitionDate:new Date(),
-      code: null
+      deliverDate:new Date(),
+      code: null,
+      warehouseCode: null
     });
 
     const handleAddEdit = (index, row,type) => {
       if (row!==null){
-        if (type=='查看'){
-          isAdd.value=true;
-        }else {
-          isAdd.value=false;
-        }
+        isAdd.value=true;
+        queryWarehouseList({"value":row.warehouseCode}).then((res) => {
+          warehouseData.value = res.data;
+        });
         //编辑
         Object.keys(form).forEach((item) => {
           form[item] = row[item];
         });
-        queryRequisitionDetail({code:row.code}).then((res)=>{
-          requisitionData.value=res.data;
+        queryEntryDetail({code:row.code}).then((res)=>{
+          deliverData.value=res.data;
         });
       }else {
         isAdd.value=false;
-        form.requisitionDate=new Date();
+        form.deliverDate=new Date();
         form.code=null;
-        requisitionData.value=[];
+        form.warehouseCode=null;
+        deliverData.value=[];
       }
       const newTabName = `${++tabIndex}`
       editableTabs.value.push({
@@ -265,7 +301,7 @@ export default {
     };
 
     const addMaterial=()=>{
-      requisitionData.value.push({
+      deliverData.value.push({
         materialNo:null,
         materialName:null,
         brand:null,
@@ -273,6 +309,7 @@ export default {
         price:null,
         unit:null,
         quantity:0,
+        money:0
       })
     };
     const currentRowIndex = ref();
@@ -283,17 +320,21 @@ export default {
       currentRowIndex.value=row.row_index;
     };
     const deleteMaterial=()=>{
-      requisitionData.value.splice(currentRowIndex.value,1)
+      deliverData.value.splice(currentRowIndex.value,1)
+    };
+
+    const quantityChange=(row)=>{
+      row.money=row.quantity*row.price;
     };
     const save = () => {
       formRef.value.validate((valid) => {
         if (valid) {
-          if (requisitionData.value.length===0){
+          if (deliverData.value.length===0){
             ElMessage.warning("请添加入库物料")
             return
           }
-          form.requisitionData=requisitionData.value;
-          saveRequisition(form).then((res) => {
+          form.deliverData=deliverData.value;
+          saveEntry(form).then((res) => {
             ElMessage.success("保存成功");
             removeTab(tab.value);
             getData();
@@ -316,11 +357,14 @@ export default {
       form,
       rules,
       formRef,
+      warehouseData,
       materialData,
-      requisitionData,
+      deliverData,
       isAdd,
+      queryWarehouseData,
       queryMaterialData,
       materialChange,
+      quantityChange,
       removeTab,
       operatingTime,
       operatingTime_yyyyMMDD,
