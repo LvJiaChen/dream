@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dream.common.mapper.WmsRequisitionMapper">
+    <select id="queryRequisitionListPage" resultType="com.dream.common.vo.WmsRequisitionPageVo">
+        select ew.code,
+        ew.requisition_date "requisitionDate",
+        GROUP_CONCAT(ew.material_name separator ';') "materialNameConcat",
+        ew.creator,
+        ew.create_time "createTime"
+        from wms_requisition ew
+        <where>
+            <if test="code!=null and code!=''">
+                and ew.code=#{code}
+            </if>
+            <if test="materialName!=null and materialName!=''">
+                and ew.material_name=#{materialName}
+            </if>
+        </where>
+        group by ew.code,ew.creator
+        order by ew.id desc
+    </select>
 
+    <select id="queryRequisitionDetail" parameterType="java.util.Map" resultType="com.dream.common.vo.WmsRequisitionDetailVo">
+        select wms_requisition.material_no   "materialNo",
+        wms_requisition.material_name "materialName",
+        wm.brand,
+        wm.space,
+        wm.price,
+        wms_requisition.quantity,
+        wms_requisition.unit
+        from wms_requisition
+        left join wms_material wm on wms_requisition.material_no = wm.material_no
+        <where>
+            <if test="code!=null and code!=''">
+                and wms_requisition.code=#{code}
+            </if>
+        </where>
+    </select>
 </mapper>
