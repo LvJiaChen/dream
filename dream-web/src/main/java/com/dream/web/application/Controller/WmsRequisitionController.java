@@ -3,6 +3,7 @@ package com.dream.web.application.Controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.dream.common.vo.WmsRequisitionDetailVo;
+import com.dream.common.vo.WmsRequisitionNoVo;
 import com.dream.common.vo.WmsRequisitionPageVo;
 import com.dream.service.IWmsRequisitionService;
 import com.dream.web.application.utils.Result;
@@ -33,7 +34,7 @@ public class WmsRequisitionController {
 
 
     /**
-     * 查询入库表数据
+     * 查询领料单表数据
      *
      * @param
      * @return
@@ -57,7 +58,7 @@ public class WmsRequisitionController {
     }
 
     /**
-     * 查询入库单物料明细
+     * 查询领料单物料明细
      *
      * @param
      * @return
@@ -68,4 +69,15 @@ public class WmsRequisitionController {
         return Result.ok(requisitionDetailVos);
     }
 
+    /**
+     * 查询领料单号
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/queryRequisitionNo")
+    public Result queryRequisitionNo(@RequestBody Map param) {
+        List<WmsRequisitionNoVo> requisitionDetailVos= wmsRequisitionService.queryRequisitionNo(param);
+        return Result.ok(requisitionDetailVos);
+    }
 }

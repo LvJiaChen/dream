@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dream.common.entity.WmsRequisition;
 import com.dream.common.mapper.WmsRequisitionMapper;
 import com.dream.common.vo.WmsRequisitionDetailVo;
+import com.dream.common.vo.WmsRequisitionNoVo;
 import com.dream.common.vo.WmsRequisitionPageVo;
 import com.dream.service.IWmsRequisitionService;
 import com.dream.service.IWmsSerialNumberService;
@@ -81,7 +82,7 @@ public class WmsRequisitionServiceImpl extends ServiceImpl<WmsRequisitionMapper,
             //判断状态是否为未入库
             requisitions.forEach(a->{
                 if (!"未入库".equals(a.getStatus())){
-                    throw new RuntimeException("只能修改未入库的领料单");
+                    throw new RuntimeException("只能修改未出库的领料单");
                 }
             });
             //删除原领料单所有数据然后冲销插入
@@ -98,7 +99,7 @@ public class WmsRequisitionServiceImpl extends ServiceImpl<WmsRequisitionMapper,
             }
             a.setCode(code);
             a.setRequisitionDate(DateUtil.parse((String) param.get("requisitionDate")));
-            a.setStatus("未入库");
+            a.setStatus("未出库");
             a.setDeliverQuantity(BigDecimal.ZERO);
         }
         this.saveBatch(requisitionList);
@@ -108,5 +109,10 @@ public class WmsRequisitionServiceImpl extends ServiceImpl<WmsRequisitionMapper,
     public List<WmsRequisitionDetailVo> queryRequisitionDetail(Map param) {
         List<WmsRequisitionDetailVo> requisitionDetail=wmsRequisitionMapper.queryRequisitionDetail(param);
         return requisitionDetail;
+    }
+
+    @Override
+    public List<WmsRequisitionNoVo> queryRequisitionNo(Map param) {
+        return wmsRequisitionMapper.queryRequisitionNo(param);
     }
 }

@@ -33,7 +33,7 @@
                 {{operatingTime(scope.row.createTime)}}
               </template>
             </el-table-column>
-            <el-table-column label="操作" width="180" align="center">
+            <el-table-column fixed label="操作" width="180" align="center">
               <template #default="scope">
                 <el-button type="text" icon="el-icon-edit" @click="handleAddEdit(scope.$index, scope.row,'查看')">查看</el-button>
               </template>
@@ -68,6 +68,28 @@
               >
               </el-date-picker>
             </el-form-item>
+
+            <el-form-item label="领料单号" prop="referenceNo">
+              <el-select v-model="form.referenceNo"
+                         :disabled="isAdd"
+                         filterable
+                         remote
+                         :remote-method="queryRequisitionData"
+                         class="m-2"
+                         placeholder="请输入仓库"
+                         size="large">
+                <el-option
+                    v-for="item in requisitionData"
+                    :key="item.code"
+                    :label="item.code"
+                    :value="item.code"
+                >
+                  <span style="float: left; font-size: 13px">申请单号：{{item.code }}</span>
+                  <span style="float: right; font-size: 13px">物料名称：{{ item.materialNameConcat }}</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
+
             <el-form-item label="仓库名称" prop="warehouseCode">
               <el-select v-model="form.warehouseCode"
                          :disabled="isAdd"
@@ -153,7 +175,14 @@
 <script>
 import moment from "moment"
 import {reactive, ref} from "vue";
-import {queryMaterialList, queryWarehouseList, queryEntryListPage,queryEntryDetail, saveEntry} from "../api";
+import {
+  queryMaterialList,
+  queryWarehouseList,
+  queryEntryListPage,
+  queryEntryDetail,
+  saveEntry,
+  queryRequisitionNo
+} from "../api";
 import {ElMessage} from "element-plus";
 
 export default {
@@ -170,6 +199,7 @@ export default {
       pageSize: 10,
     });
     const warehouseData=ref([]);
+    const requisitionData=ref([]);
     const materialData=ref([]);
     const tableData = ref([]);
     const pageTotal = ref(0);
@@ -181,6 +211,13 @@ export default {
           trigger: 'blur',
         }
       ],
+      referenceNo:[
+        {
+          required: true,
+          message: '请选择领料单',
+          trigger: 'blur',
+        },
+      ],
       warehouseCode:[
         {
           required: true,
@@ -191,7 +228,16 @@ export default {
     }
     let formRef=ref(null);
     const deliverData=ref([])
-
+    //获取领料单数据
+    const queryRequisitionData=(query)=>{
+      if (query) {
+        queryRequisitionNo({"value":query}).then((res) => {
+          requisitionData.value = res.data;
+        });
+      } else {
+        requisitionData.value = []
+      }
+    };
     // 获取仓库数据
     const queryWarehouseData = (query) => {
       if (query) {
@@ -253,6 +299,7 @@ export default {
     let form = reactive({
       deliverDate:new Date(),
       code: null,
+      referenceNo:null,
       warehouseCode: null
     });
 
@@ -357,10 +404,12 @@ export default {
       form,
       rules,
       formRef,
+      requisitionData,
       warehouseData,
       materialData,
       deliverData,
       isAdd,
+      queryRequisitionData,
       queryWarehouseData,
       queryMaterialData,
       materialChange,

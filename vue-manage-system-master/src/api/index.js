@@ -77,3 +77,7 @@ export const saveRequisition = data => {
 export const queryRequisitionDetail = data => {
     return Axios.post(baseUrl+"/wms-requisition/queryRequisitionDetail",data);
 };
+/*查询领料单号*/
+export const queryRequisitionNo = data => {
+    return Axios.post(baseUrl+"/wms-requisition/queryRequisitionNo",data);
+};

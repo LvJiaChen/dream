@@ -10,10 +10,10 @@
         from wms_requisition ew
         <where>
             <if test="code!=null and code!=''">
-                and ew.code=#{code}
+                and ew.code like concat('%',#{code},'%')
             </if>
             <if test="materialName!=null and materialName!=''">
-                and ew.material_name=#{materialName}
+                and ew.material_name like concat('%',#{materialName},'%')
             </if>
         </where>
         group by ew.code,ew.creator
@@ -37,5 +37,19 @@
                 and wms_requisition.code=#{code}
             </if>
         </where>
+    </select>
+
+    <select id="queryRequisitionNo" resultType="com.dream.common.vo.WmsRequisitionNoVo">
+        select ew.code,
+        GROUP_CONCAT(ew.material_name separator ';') "materialNameConcat"
+        from wms_requisition ew
+        <where>
+            <if test="value!=null and value!=''">
+                and ew.code like concat('%', #{value},'%')
+            </if>
+            and ew.status in ('未出库','部分出库')
+        </where>
+        group by ew.code
+        order by ew.id desc
     </select>
 </mapper>

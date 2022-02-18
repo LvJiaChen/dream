@@ -14,10 +14,10 @@
         left join wms_warehouse on ew.warehouse_code = wms_warehouse.code
         <where>
             <if test="code!=null and code!=''">
-                and ew.code=#{code}
+                and ew.code like concat('%',#{code},'%')
             </if>
             <if test="materialName!=null and materialName!=''">
-                and ew.material_name=#{materialName}
+                and ew.material_name like concat('%',#{materialName},'%')
             </if>
         </where>
         group by ew.code, ew.warehouse_code, wms_warehouse.name, ew.creator

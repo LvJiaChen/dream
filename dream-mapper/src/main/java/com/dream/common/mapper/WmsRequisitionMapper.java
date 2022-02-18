@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dream.common.entity.WmsRequisition;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.dream.common.vo.WmsRequisitionDetailVo;
+import com.dream.common.vo.WmsRequisitionNoVo;
 import com.dream.common.vo.WmsRequisitionPageVo;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface WmsRequisitionMapper extends BaseMapper<WmsRequisition> {
     IPage<WmsRequisitionPageVo> queryRequisitionListPage(Page<WmsRequisitionPageVo> entryPageVoPage, String code, String materialName);
 
     List<WmsRequisitionDetailVo> queryRequisitionDetail(Map param);
+
+    List<WmsRequisitionNoVo> queryRequisitionNo(Map param);
 }
