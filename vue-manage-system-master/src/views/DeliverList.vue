@@ -334,6 +334,7 @@ export default {
         form.deliverDate=new Date();
         form.code=null;
         form.warehouseCode=null;
+        form.referenceNo=null;
         deliverData.value=[];
       }
       const newTabName = `${++tabIndex}`
