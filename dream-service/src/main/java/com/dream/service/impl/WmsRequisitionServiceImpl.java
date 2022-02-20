@@ -115,4 +115,12 @@ public class WmsRequisitionServiceImpl extends ServiceImpl<WmsRequisitionMapper,
     public List<WmsRequisitionNoVo> queryRequisitionNo(Map param) {
         return wmsRequisitionMapper.queryRequisitionNo(param);
     }
+
+    @Override
+    public List<WmsRequisitionDetailVo> queryRequisitionForRequisitionNo(Map param) {
+        List<WmsRequisitionDetailVo> requisitionDetail=wmsRequisitionMapper.queryRequisitionDetail(param);
+        requisitionDetail.stream().filter(a->"未出库".equals(a.getStatus())||"部分出库".equals(a.getStatus()))
+                .forEach(a->a.setDisDeliverQuantity(a.getQuantity().subtract(a.getDeliverQuantity())));
+        return requisitionDetail;
+    }
 }

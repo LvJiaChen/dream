@@ -13,6 +13,7 @@
           <div class="handle-box">
             <el-input v-model="query.code" placeholder="出库单号" class="handle-input mr10"></el-input>
             <el-input v-model="query.materialName" placeholder="物料名称" class="handle-input mr10"></el-input>
+            <el-input v-model="query.referenceNo" placeholder="领料单号" class="handle-input mr10"></el-input>
             <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             <el-button type="primary" icon="el-icon-search" @click="handleAddEdit(null,null,'添加')">添加</el-button>
           </div>
@@ -75,6 +76,7 @@
                          filterable
                          remote
                          :remote-method="queryRequisitionData"
+                         @change="referenceNoChange"
                          class="m-2"
                          placeholder="请输入仓库"
                          size="large">
@@ -85,7 +87,6 @@
                     :value="item.code"
                 >
                   <span style="float: left; font-size: 13px">申请单号：{{item.code }}</span>
-                  <span style="float: right; font-size: 13px">物料名称：{{ item.materialNameConcat }}</span>
                 </el-option>
               </el-select>
             </el-form-item>
@@ -128,12 +129,10 @@
               <template #default="scope">
                 <el-select v-model="scope.row.materialNo"
                            :disabled="isAdd"
-                           filterable
-                           remote
-                           :remote-method="queryMaterialData"
                            class="m-2"
                            placeholder="请输入物料信息"
                            @change="materialChange(scope.row)"
+                           @visible-change="materialVisibleChange"
                            size="large">
                   <el-option
                       v-for="item in materialData"
@@ -157,9 +156,10 @@
             </el-table-column>
             <el-table-column label="数量" width="250">
               <template #default="scope">
-                <el-input-number  :disabled="isAdd" v-model="scope.row.quantity" :min="0" precision="4" @change="quantityChange(scope.row)"></el-input-number>
+                <el-input-number  :disabled="isAdd" v-model="scope.row.quantity" :min="0" :max="scope.row.disDeliverQuantity" precision="4" @change="quantityChange(scope.row)"></el-input-number>
               </template>
             </el-table-column>
+            <el-table-column prop="disDeliverQuantity" label="未出库数量"></el-table-column>
             <el-table-column prop="unit" label="单位" width="100"></el-table-column>
             <el-table-column label="金额" width="100">
               <template #default="scope">￥{{ scope.row.money }}</template>
@@ -176,12 +176,11 @@
 import moment from "moment"
 import {reactive, ref} from "vue";
 import {
-  queryMaterialList,
   queryWarehouseList,
-  queryEntryListPage,
+  queryDeliverListPage,
   queryEntryDetail,
-  saveEntry,
-  queryRequisitionNo
+  queryRequisitionNo,
+  queryRequisitionForRequisitionNo, saveDeliver
 } from "../api";
 import {ElMessage} from "element-plus";
 
@@ -195,6 +194,7 @@ export default {
     const query = reactive({
       code: null,
       name: null,
+      referenceNo:null,
       pageIndex: 1,
       pageSize: 10,
     });
@@ -238,6 +238,12 @@ export default {
         requisitionData.value = []
       }
     };
+    const referenceNoChange=(value)=>{
+      deliverData.value=[];
+      queryRequisitionForRequisitionNo({code:value}).then((res)=>{
+        materialData.value=res.data;
+      })
+    };
     // 获取仓库数据
     const queryWarehouseData = (query) => {
       if (query) {
@@ -248,20 +254,26 @@ export default {
         warehouseData.value = []
       }
     };
-
-    // 获取物料数据
-    const queryMaterialData = (query) => {
-      if (query) {
-        queryMaterialList({"value":query}).then((res) => {
-          materialData.value = res.data;
-        });
-      } else {
-        materialData.value = []
+    const materialVisibleChange=(t)=>{
+      if (t){
+        if (!form.referenceNo){
+          ElMessage.error("请选选择领料单号");
+        }
       }
     };
-
     const materialChange=(row)=>{
       let material=null;
+      let flag=0;
+      for (let item of deliverData.value) {
+        if (item.materialNo==row.materialNo){
+          flag++;
+        }
+      }
+      if (flag>1){
+        ElMessage.error("物料编码不能重复添加")
+        row.materialNo=null;
+        return
+      }
       materialData.value.forEach(a=>{
         if (a.materialNo===row.materialNo){
           material=a;
@@ -271,11 +283,12 @@ export default {
       row.brand=material.brand;
       row.space=material.space;
       row.price=material.price;
+      row.disDeliverQuantity=material.disDeliverQuantity;
       row.unit=material.unit;
     };
     // 获取表格数据
     const getData = () => {
-      queryEntryListPage(query).then((res) => {
+      queryDeliverListPage(query).then((res) => {
         ElMessage.success("查询成功");
         tableData.value = res.data.records;
         pageTotal.value = res.data.total;
@@ -381,7 +394,7 @@ export default {
             return
           }
           form.deliverData=deliverData.value;
-          saveEntry(form).then((res) => {
+          saveDeliver(form).then((res) => {
             ElMessage.success("保存成功");
             removeTab(tab.value);
             getData();
@@ -410,9 +423,10 @@ export default {
       deliverData,
       isAdd,
       queryRequisitionData,
+      referenceNoChange,
       queryWarehouseData,
-      queryMaterialData,
       materialChange,
+      materialVisibleChange,
       quantityChange,
       removeTab,
       operatingTime,

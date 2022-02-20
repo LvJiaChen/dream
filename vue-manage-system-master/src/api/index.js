@@ -77,7 +77,22 @@ export const saveRequisition = data => {
 export const queryRequisitionDetail = data => {
     return Axios.post(baseUrl+"/wms-requisition/queryRequisitionDetail",data);
 };
+/*出库单管理*/
+/*查询出库单信息*/
+export const queryDeliverListPage = data => {
+    return Axios.post(baseUrl+"/wms-deliver/queryDeliverListPage",data);
+};
 /*查询领料单号*/
 export const queryRequisitionNo = data => {
     return Axios.post(baseUrl+"/wms-requisition/queryRequisitionNo",data);
+};
+/*
+查询未出库和部分出库的领料单，通过领料单号
+*/
+export const queryRequisitionForRequisitionNo = data => {
+    return Axios.post(baseUrl+"/wms-requisition/queryRequisitionForRequisitionNo",data);
+};
+/*保存出库单*/
+export const saveDeliver = data => {
+    return Axios.post(baseUrl+"/wms-deliver/saveDeliver",data);
 };

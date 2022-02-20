@@ -80,4 +80,17 @@ public class WmsRequisitionController {
         List<WmsRequisitionNoVo> requisitionDetailVos= wmsRequisitionService.queryRequisitionNo(param);
         return Result.ok(requisitionDetailVos);
     }
+
+
+    /**
+     * 查询领料单号
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/queryRequisitionForRequisitionNo")
+    public Result queryRequisitionForRequisitionNo(@RequestBody Map param) {
+        List<WmsRequisitionDetailVo> requisitionDetailVos= wmsRequisitionService.queryRequisitionForRequisitionNo(param);
+        return Result.ok(requisitionDetailVos);
+    }
 }

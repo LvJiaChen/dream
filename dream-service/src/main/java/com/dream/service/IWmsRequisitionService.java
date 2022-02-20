@@ -27,4 +27,6 @@ public interface IWmsRequisitionService extends IService<WmsRequisition> {
     List<WmsRequisitionDetailVo> queryRequisitionDetail(Map param);
 
     List<WmsRequisitionNoVo> queryRequisitionNo(Map param);
+
+    List<WmsRequisitionDetailVo> queryRequisitionForRequisitionNo(Map param);
 }

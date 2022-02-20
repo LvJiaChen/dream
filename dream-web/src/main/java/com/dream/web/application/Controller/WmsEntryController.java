@@ -45,7 +45,7 @@ public class WmsEntryController {
     }
 
     /**
-     * 保存物料
+     * 保存入库单
      *
      * @param
      * @return

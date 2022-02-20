@@ -1,7 +1,11 @@
 package com.dream.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.dream.common.entity.WmsDeliver;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dream.common.vo.WmsDeliverPageVo;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -13,4 +17,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IWmsDeliverService extends IService<WmsDeliver> {
 
+    IPage<WmsDeliverPageVo> queryDeliverListPage(Map param);
+
+    void saveDeliver(Map param);
 }

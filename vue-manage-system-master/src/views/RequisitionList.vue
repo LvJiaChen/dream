@@ -110,7 +110,7 @@
             <el-table-column prop="materialName" label="物料名称"></el-table-column>
             <el-table-column prop="brand" label="品牌"></el-table-column>
             <el-table-column prop="space" label="规格型号"></el-table-column>
-            <el-table-column label="价格" width="100">
+            <el-table-column label="参考价格" width="100">
               <template #default="scope">￥{{ scope.row.price }}</template>
             </el-table-column>
             <el-table-column label="数量" width="250">
@@ -181,6 +181,17 @@ export default {
 
     const materialChange=(row)=>{
       let material=null;
+      let flag=0;
+      for (let item of requisitionData.value) {
+        if (item.materialNo==row.materialNo){
+          flag++;
+        }
+      }
+      if (flag>1){
+        ElMessage.error("物料编码不能重复添加")
+        row.materialNo=null;
+        return
+      }
       materialData.value.forEach(a=>{
         if (a.materialNo===row.materialNo){
           material=a;

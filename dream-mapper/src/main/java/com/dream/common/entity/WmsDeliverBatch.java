@@ -24,9 +24,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("wms_deliver")
-@ApiModel(value = "WmsDeliver对象", description = "")
-public class WmsDeliver implements Serializable {
+@TableName("wms_deliver_batch")
+@ApiModel(value = "WmsDeliverBatch对象", description = "")
+public class WmsDeliverBatch implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,8 +36,11 @@ public class WmsDeliver implements Serializable {
     @ApiModelProperty("出库单号")
     private String code;
 
-    @ApiModelProperty("申请单号")
-    private String requisitionCode;
+    @ApiModelProperty("出库单明细")
+    private String deliverItem;
+
+    @ApiModelProperty("入库批次")
+    private String batch;
 
     @ApiModelProperty("物料编码")
     private String materialNo;
@@ -56,18 +59,6 @@ public class WmsDeliver implements Serializable {
 
     @ApiModelProperty("金额")
     private BigDecimal money;
-
-    @ApiModelProperty("出库时间")
-    private Date deliverDate;
-
-    @ApiModelProperty("仓库编码")
-    private String warehouseCode;
-
-    @ApiModelProperty("关联单号")
-    private String referenceNo;
-
-    @ApiModelProperty("状态（出库、冲销）")
-    private String status;
 
     @TableField(fill = FieldFill.INSERT)
     @Version

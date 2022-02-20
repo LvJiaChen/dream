@@ -2,4 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dream.common.mapper.WmsDeliverMapper">
 
+    <select id="queryDeliverListPage" resultType="com.dream.common.vo.WmsDeliverPageVo">
+        select ew.code,
+        ew.deliver_date "deliverDate",
+        GROUP_CONCAT(ew.material_name separator ';') "materialNameConcat",
+        ew.warehouse_code "warehouseCode",
+        wms_warehouse.name "warehouseName",
+        ew.creator,
+        ew.reference_no "referenceNo",
+        ew.create_time "createTime",
+        sum(ew.money) "moneyAll"
+        from wms_deliver ew
+        left join wms_warehouse on ew.warehouse_code = wms_warehouse.code
+        <where>
+            <if test="code!=null and code!=''">
+                and ew.code like concat('%',#{code},'%')
+            </if>
+            <if test="materialName!=null and materialName!=''">
+                and ew.material_name like concat('%',#{materialName},'%')
+            </if>
+            <if test="referenceNo!=null and referenceNo!=''">
+                and ew.reference_no like concat('%',#{referenceNo},'%')
+            </if>
+        </where>
+        group by ew.code, ew.warehouse_code, wms_warehouse.name, ew.creator,ew.reference_no
+        order by ew.id desc
+    </select>
 </mapper>
