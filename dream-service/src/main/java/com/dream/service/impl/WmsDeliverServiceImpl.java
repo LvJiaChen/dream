@@ -84,57 +84,57 @@ public class WmsDeliverServiceImpl extends ServiceImpl<WmsDeliverMapper, WmsDeli
         //出库单号
         String code= iWmsSerialNumberService.generateSerialNumberByModelCode("wms_deliver_code");
 
-        deliverList.forEach(a->{
-            Integer deliverItem=1;
+        Integer deliverItem=1;
+        for (WmsDeliver a : deliverList) {
             //出库金额
-            BigDecimal moneyAll=BigDecimal.ZERO;
-            BigDecimal quantityAll=BigDecimal.ZERO;
+            BigDecimal moneyAll = BigDecimal.ZERO;
+            BigDecimal quantityAll = BigDecimal.ZERO;
             //校验物料编码是否为空
-            if (StrUtil.isBlank(a.getMaterialNo())){
+            if (StrUtil.isBlank(a.getMaterialNo())) {
                 throw new RuntimeException("物料编码不能为空");
             }
             //入库数量不能为0校验
-            if (a.getQuantity().compareTo(BigDecimal.ZERO)==0){
-                throw new RuntimeException("物料："+a.getMaterialNo()+"出库数量不能等于0");
+            if (a.getQuantity().compareTo(BigDecimal.ZERO) == 0) {
+                throw new RuntimeException("物料：" + a.getMaterialNo() + "出库数量不能等于0");
             }
             //分配库存
             for (WmsStock stock : stocks) {
-                if (a.getMaterialNo().equals(stock.getMaterialNo())){
-                    if (a.getQuantity().compareTo(BigDecimal.ZERO)>0){
-                        WmsStock updateStock=new WmsStock();
-                        BeanUtil.copyProperties(stock,updateStock);
-                        if (stock.getQuantity().compareTo(a.getQuantity())>=0){
+                if (a.getMaterialNo().equals(stock.getMaterialNo())) {
+                    if (a.getQuantity().compareTo(BigDecimal.ZERO) > 0) {
+                        WmsStock updateStock = new WmsStock();
+                        BeanUtil.copyProperties(stock, updateStock);
+                        if (stock.getQuantity().compareTo(a.getQuantity()) >= 0) {
                             //如果库存数量大于出库数量
                             stock.setQuantity(stock.getQuantity().subtract(a.getQuantity()));
                             updateStock.setQuantity(a.getQuantity());
                             updateStock.setMoney(updateStock.getPrice().multiply(updateStock.getQuantity())
                                     .setScale(2, RoundingMode.HALF_UP));
                             a.setQuantity(BigDecimal.ZERO);
-                        }else {
+                        } else {
                             //如果库存数量小于称出库数量
                             a.setQuantity(a.getQuantity().subtract(stock.getQuantity()));
                             stock.setQuantity(BigDecimal.ZERO);
                         }
                         updateStocks.add(updateStock);
-                        WmsDeliverBatch deliverBatch=new WmsDeliverBatch();
-                        BeanUtil.copyProperties(updateStock,deliverBatch);
+                        WmsDeliverBatch deliverBatch = new WmsDeliverBatch();
+                        BeanUtil.copyProperties(updateStock, deliverBatch);
                         deliverBatch.setCode(code);
-                        deliverBatch.setDeliverItem(deliverItem+"");
-                        moneyAll=moneyAll.add(deliverBatch.getMoney());
-                        quantityAll=quantityAll.add(deliverBatch.getQuantity());
+                        deliverBatch.setDeliverItem(deliverItem + "");
+                        moneyAll = moneyAll.add(deliverBatch.getMoney());
+                        quantityAll = quantityAll.add(deliverBatch.getQuantity());
                         deliverBatchList.add(deliverBatch);
                     }
                 }
             }
-            if (a.getQuantity().compareTo(BigDecimal.ZERO)>0){
-                throw new RuntimeException("物料："+a.getMaterialNo()+"库存不足");
+            if (a.getQuantity().compareTo(BigDecimal.ZERO) > 0) {
+                throw new RuntimeException("物料：" + a.getMaterialNo() + "库存不足");
             }
             //修改领料单状态
             for (WmsRequisition r : requisitionList) {
-                if (a.getMaterialNo().equals(r.getMaterialNo())){
+                if (a.getMaterialNo().equals(r.getMaterialNo())) {
                     r.setDeliverQuantity(r.getDeliverQuantity().add(quantityAll));
                     r.setStatus("部分出库");
-                    if (r.getDeliverQuantity().equals(r.getQuantity())){
+                    if (r.getDeliverQuantity().equals(r.getQuantity())) {
                         r.setStatus("全部出库");
                     }
                     updateRequisitionList.add(r);
@@ -142,18 +142,18 @@ public class WmsDeliverServiceImpl extends ServiceImpl<WmsDeliverMapper, WmsDeli
                 }
             }
             a.setCode(code);
-            a.setDeliverItem(deliverItem+"");
+            a.setDeliverItem(deliverItem + "");
             a.setDeliverDate(DateUtil.parse((String) param.get("deliverDate")));
             a.setWarehouseCode((String) param.get("warehouseCode"));
             a.setReferenceNo((String) param.get("referenceNo"));
             a.setStatus("出库");
             a.setMoney(moneyAll);
             a.setQuantity(quantityAll);
-            if(a.getQuantity().compareTo(BigDecimal.ZERO)!=0){
-                a.setPrice(a.getMoney().divide(a.getQuantity(),2,RoundingMode.HALF_UP));
+            if (a.getQuantity().compareTo(BigDecimal.ZERO) != 0) {
+                a.setPrice(a.getMoney().divide(a.getQuantity(), 2, RoundingMode.HALF_UP));
             }
             deliverItem++;
-        });
+        }
         this.saveBatch(deliverList);
         requisitionService.updateBatchById(updateRequisitionList);
         deliverBatchService.saveBatch(deliverBatchList);
