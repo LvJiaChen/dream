@@ -9,7 +9,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dream.common.entity.*;
 import com.dream.common.mapper.WmsDeliverMapper;
 import com.dream.common.mapper.WmsRequisitionMapper;
+import com.dream.common.vo.WmsDeliverDetailVo;
 import com.dream.common.vo.WmsDeliverPageVo;
+import com.dream.common.vo.WmsEntryDetailVo;
 import com.dream.common.vo.WmsEntryPageVo;
 import com.dream.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -157,5 +159,11 @@ public class WmsDeliverServiceImpl extends ServiceImpl<WmsDeliverMapper, WmsDeli
         deliverBatchService.saveBatch(deliverBatchList);
         //修改库存
         stockService.changeStock(updateStocks,"deliver");
+    }
+
+    @Override
+    public List<WmsDeliverDetailVo> queryDeliverDetail(Map param) {
+        List<WmsDeliverDetailVo> deliverDetailVos=wmsDeliverMapper.queryDeliverDetail(param);
+        return deliverDetailVos;
     }
 }

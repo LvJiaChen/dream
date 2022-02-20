@@ -96,3 +96,7 @@ export const queryRequisitionForRequisitionNo = data => {
 export const saveDeliver = data => {
     return Axios.post(baseUrl+"/wms-deliver/saveDeliver",data);
 };
+/*查询出库单详情*/
+export const queryDeliverDetail = data => {
+    return Axios.post(baseUrl+"/wms-deliver/queryDeliverDetail",data);
+};

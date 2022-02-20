@@ -159,7 +159,6 @@
                 <el-input-number  :disabled="isAdd" v-model="scope.row.quantity" :min="0" :max="scope.row.disDeliverQuantity" precision="4" @change="quantityChange(scope.row)"></el-input-number>
               </template>
             </el-table-column>
-            <el-table-column prop="disDeliverQuantity" label="未出库数量"></el-table-column>
             <el-table-column prop="unit" label="单位" width="100"></el-table-column>
             <el-table-column label="金额" width="100">
               <template #default="scope">￥{{ scope.row.money }}</template>
@@ -178,9 +177,8 @@ import {reactive, ref} from "vue";
 import {
   queryWarehouseList,
   queryDeliverListPage,
-  queryEntryDetail,
   queryRequisitionNo,
-  queryRequisitionForRequisitionNo, saveDeliver
+  queryRequisitionForRequisitionNo, saveDeliver, queryDeliverDetail
 } from "../api";
 import {ElMessage} from "element-plus";
 
@@ -326,7 +324,7 @@ export default {
         Object.keys(form).forEach((item) => {
           form[item] = row[item];
         });
-        queryEntryDetail({code:row.code}).then((res)=>{
+        queryDeliverDetail({code:row.code}).then((res)=>{
           deliverData.value=res.data;
         });
       }else {
@@ -335,6 +333,7 @@ export default {
         form.code=null;
         form.warehouseCode=null;
         form.referenceNo=null;
+        requisitionData.value=[];
         deliverData.value=[];
       }
       const newTabName = `${++tabIndex}`

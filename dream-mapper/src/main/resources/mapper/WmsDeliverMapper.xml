@@ -28,4 +28,22 @@
         group by ew.code, ew.warehouse_code, wms_warehouse.name, ew.creator,ew.reference_no
         order by ew.id desc
     </select>
+
+    <select id="queryDeliverDetail" parameterType="java.util.Map" resultType="com.dream.common.vo.WmsDeliverDetailVo">
+        select wms_deliver.material_no   "materialNo",
+        wms_deliver.material_name "materialName",
+        wm.brand,
+        wm.space,
+        wms_deliver.price,
+        wms_deliver.quantity,
+        wms_deliver.unit,
+        wms_deliver.money
+        from wms_deliver
+        left join wms_material wm on wms_deliver.material_no = wm.material_no
+        <where>
+            <if test="code!=null and code!=''">
+                and wms_deliver.code=#{code}
+            </if>
+        </where>
+    </select>
 </mapper>
