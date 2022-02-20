@@ -36,6 +36,9 @@ public class WmsDeliver implements Serializable {
     @ApiModelProperty("出库单号")
     private String code;
 
+    @ApiModelProperty("出库明细")
+    private String deliverItem;
+
     @ApiModelProperty("申请单号")
     private String requisitionCode;
 
