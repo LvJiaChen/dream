@@ -45,7 +45,7 @@ public class CodeGenerator {
                             .pathInfo(pathInfo);
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("wms_deliver") // 设置需要生成的表名
+                    builder.addInclude("wms_to_do_matters") // 设置需要生成的表名
                             //.addTablePrefix("dream_") // 设置过滤表前缀
                             .entityBuilder()
                             .versionColumnName("version")

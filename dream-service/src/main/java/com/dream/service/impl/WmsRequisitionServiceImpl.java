@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dream.common.entity.WmsRequisition;
+import com.dream.common.entity.WmsToDoMatters;
 import com.dream.common.mapper.WmsRequisitionMapper;
+import com.dream.common.mapper.WmsToDoMattersMapper;
 import com.dream.common.vo.WmsRequisitionDetailVo;
 import com.dream.common.vo.WmsRequisitionNoVo;
 import com.dream.common.vo.WmsRequisitionPageVo;
@@ -37,6 +39,8 @@ public class WmsRequisitionServiceImpl extends ServiceImpl<WmsRequisitionMapper,
     private IWmsSerialNumberService iWmsSerialNumberService;
     @Autowired
     private WmsRequisitionMapper wmsRequisitionMapper;
+    @Autowired
+    private WmsToDoMattersMapper toDoMattersMapper;
 
     @Override
     public IPage<WmsRequisitionPageVo> queryRequisitionListPage(Map param) {
@@ -101,6 +105,12 @@ public class WmsRequisitionServiceImpl extends ServiceImpl<WmsRequisitionMapper,
             a.setRequisitionDate(DateUtil.parse((String) param.get("requisitionDate")));
             a.setStatus("未出库");
             a.setDeliverQuantity(BigDecimal.ZERO);
+            //插入代办事项
+            WmsToDoMatters toDoMatters=new WmsToDoMatters();
+            toDoMatters.setMatter("领料单："+code+"已创建，请及时出库");
+            toDoMatters.setStatus(false);
+            toDoMatters.setType("system");
+            toDoMattersMapper.insert(toDoMatters);
         }
         this.saveBatch(requisitionList);
     }

@@ -61,6 +61,7 @@ export default {
                     if (res.status===200){
                       localStorage.setItem("token",res.data.token);
                       localStorage.setItem("ms_username", param.username);
+                      localStorage.setItem("last_login_time", new Date());
                       ElMessage.success("登录成功");
                       router.push("/");
                     }

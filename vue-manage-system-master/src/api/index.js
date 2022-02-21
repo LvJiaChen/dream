@@ -100,3 +100,20 @@ export const saveDeliver = data => {
 export const queryDeliverDetail = data => {
     return Axios.post(baseUrl+"/wms-deliver/queryDeliverDetail",data);
 };
+/*系统首页*/
+/*查询代办事项*/
+export const queryToDoMattersList = data => {
+    return Axios.post(baseUrl+"/wms-to-do-matters/queryToDoMattersList",data);
+};
+/*修改状态*/
+export const queryToDoMattersStatus = data => {
+    return Axios.post(baseUrl+"/wms-to-do-matters/queryToDoMattersStatus",data);
+};
+/*保存待办事项*/
+export const saveMatterPost = data => {
+    return Axios.post(baseUrl+"/wms-to-do-matters/saveMatterPost",data);
+};
+/*查询今日出库入库金额，及当前库存金额*/
+export const queryEntryDeliverStockToDate = data => {
+    return Axios.post(baseUrl+"/wms-to-do-matters/queryEntryDeliverStockToDate",data);
+};
