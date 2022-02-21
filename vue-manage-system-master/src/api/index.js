@@ -117,3 +117,7 @@ export const saveMatterPost = data => {
 export const queryEntryDeliverStockToDate = data => {
     return Axios.post(baseUrl+"/wms-to-do-matters/queryEntryDeliverStockToDate",data);
 };
+/*查询出入库金额图标数据*/
+export const queryEntryDeliverSchart = data => {
+    return Axios.post(baseUrl+"/wms-to-do-matters/queryEntryDeliverSchart",data);
+};

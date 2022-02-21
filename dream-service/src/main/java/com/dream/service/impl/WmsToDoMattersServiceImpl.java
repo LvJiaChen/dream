@@ -90,14 +90,14 @@ public class WmsToDoMattersServiceImpl extends ServiceImpl<WmsToDoMattersMapper,
         BigDecimal stockMoney=BigDecimal.ZERO;
         Map resMap=new HashMap();
         QueryWrapper<WmsEntry> entryQueryWrapper=new QueryWrapper<>();
-        entryQueryWrapper.ge("create_time",DateUtil.beginOfDay(new Date()));
+        entryQueryWrapper.ge("entry_date",DateUtil.beginOfDay(new Date()));
         entryQueryWrapper.eq("status","入库");
         List<WmsEntry> entryList=entryMapper.selectList(entryQueryWrapper);
         for (WmsEntry a : entryList) {
             entryMoney = entryMoney.add(a.getMoney());
         }
         QueryWrapper<WmsDeliver> deliverQueryWrapper=new QueryWrapper<>();
-        deliverQueryWrapper.ge("create_time",DateUtil.beginOfDay(new Date()));
+        deliverQueryWrapper.ge("deliver_date",DateUtil.beginOfDay(new Date()));
         deliverQueryWrapper.eq("status","出库");
         List<WmsDeliver> deliverList=deliverMapper.selectList(deliverQueryWrapper);
         for (WmsDeliver a : deliverList) {
@@ -113,5 +113,21 @@ public class WmsToDoMattersServiceImpl extends ServiceImpl<WmsToDoMattersMapper,
         resMap.put("deliverMoney",deliverMoney);
         resMap.put("stockMoney",stockMoney);
         return resMap;
+    }
+
+    @Override
+    public Map queryEntryDeliverSchart(Map param) {
+        //查询近一周出入库数据
+        QueryWrapper<WmsEntry> entryQueryWrapper=new QueryWrapper<>();
+        entryQueryWrapper.ge("entry_date",DateUtil.lastWeek());
+        entryQueryWrapper.eq("status","入库");
+        List<WmsEntry> entryListWeek=entryMapper.selectList(entryQueryWrapper);
+
+        QueryWrapper<WmsDeliver> deliverQueryWrapper=new QueryWrapper<>();
+        deliverQueryWrapper.ge("deliver_date",DateUtil.lastWeek());
+        deliverQueryWrapper.eq("status","出库");
+        List<WmsDeliver> deliverListWeek=deliverMapper.selectList(deliverQueryWrapper);
+
+        return null;
     }
 }

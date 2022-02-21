@@ -78,4 +78,16 @@ public class WmsToDoMattersController {
         Map resMap= toDoMattersService.queryEntryDeliverStockToDate(param);
         return Result.ok(resMap);
     }
+
+    /**
+     * 查询出入库报表数据
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/queryEntryDeliverSchart")
+    public Result queryEntryDeliverSchart(@RequestBody Map param) {
+        Map resMap= toDoMattersService.queryEntryDeliverSchart(param);
+        return Result.ok(resMap);
+    }
 }

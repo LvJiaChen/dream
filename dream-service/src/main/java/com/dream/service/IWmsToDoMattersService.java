@@ -23,4 +23,6 @@ public interface IWmsToDoMattersService extends IService<WmsToDoMatters> {
     void saveMatterPost(Map param);
 
     Map queryEntryDeliverStockToDate(Map param);
+
+    Map queryEntryDeliverSchart(Map param);
 }
