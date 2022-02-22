@@ -1,5 +1,7 @@
 package com.dream.common.vo;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -7,6 +9,7 @@ import java.util.Date;
  * @author lvxiaozuo
  * @date 2022/2/22 13:22
  */
+@Data
 public class WmsEntryWeekVo {
     private Date entryDate;
 
@@ -16,35 +19,4 @@ public class WmsEntryWeekVo {
 
     private String week;
 
-    public Date getEntryDate() {
-        return entryDate;
-    }
-
-    public void setEntryDate(Date entryDate) {
-        this.entryDate = entryDate;
-    }
-
-    public String getEntryDateStr() {
-        return entryDateStr;
-    }
-
-    public void setEntryDateStr(String entryDateStr) {
-        this.entryDateStr = entryDateStr;
-    }
-
-    public BigDecimal getMoney() {
-        return money;
-    }
-
-    public void setMoney(BigDecimal money) {
-        this.money = money;
-    }
-
-    public String getWeek() {
-        return week;
-    }
-
-    public void setWeek(String week) {
-        this.week = week;
-    }
 }
