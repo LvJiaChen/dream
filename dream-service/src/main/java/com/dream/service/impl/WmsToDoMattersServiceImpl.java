@@ -163,7 +163,7 @@ public class WmsToDoMattersServiceImpl extends ServiceImpl<WmsToDoMattersMapper,
         List<BigDecimal> deliverMoneyList=new ArrayList<>();
         QueryWrapper<WmsDeliver> deliverQueryWrapper=new QueryWrapper<>();
         deliverQueryWrapper.ge("deliver_date",DateUtil.lastWeek());
-        entryQueryWrapper.lt("deliver_date",DateUtil.beginOfDay(new Date()));
+        deliverQueryWrapper.lt("deliver_date",DateUtil.beginOfDay(new Date()));
         deliverQueryWrapper.eq("status","出库");
         List<WmsDeliver> deliverListWeek=deliverMapper.selectList(deliverQueryWrapper);
 
