@@ -186,15 +186,15 @@ export default {
       title: {
         text: "最近半年出入库趋势图",
       },
-      labels: ["6月", "7月", "8月", "9月", "10月"],
+      labels: [],
       datasets: [
         {
           label: "入库",
-          data: [234, 278, 270, 190, 230],
+          data: [],
         },
         {
           label: "出库",
-          data: [164, 178, 150, 135, 160],
+          data: [],
         }
       ],
     });

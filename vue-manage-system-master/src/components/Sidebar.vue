@@ -75,7 +75,7 @@ export default {
         index: "/deliverList",
         title: "物料出库",
       },
-      {
+     /* {
         icon: "el-icon-lx-copy",
         index: "/tabs",
         title: "tab选项卡",
@@ -104,8 +104,8 @@ export default {
             ],
           },
         ],
-      },
-      {
+      },*/
+/*      {
         icon: "el-icon-lx-emoji",
         index: "/icon",
         title: "自定义图标",
@@ -114,7 +114,7 @@ export default {
         icon: "el-icon-pie-chart",
         index: "/charts",
         title: "schart图表",
-      },
+      },*/
       {
         icon: "el-icon-lx-warn",
         index: "7",
