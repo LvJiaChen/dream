@@ -163,7 +163,7 @@ export default {
       ]
     };
     let formRef=ref(null);
-    const options = {
+    const options = ref({
       type: "bar",
       title: {
         text: "最近一周出入库情况",
@@ -180,7 +180,7 @@ export default {
           data: [164, 178, 190, 135, 160],
         }
       ],
-    };
+    });
     const options2 = {
       type: "line",
       title: {
@@ -236,7 +236,9 @@ export default {
     //查询图标数据
     const queryEntryDeliverSchartData=()=>{
       queryEntryDeliverSchart({}).then((res)=>{
-        debugger
+        options.value.labels=res.data.week;
+        options.value.datasets[0].data=res.data.weekEntryData;
+        options.value.datasets[1].data=res.data.weekDeliverData;
       })
     };
     queryEntryDeliverSchartData();
