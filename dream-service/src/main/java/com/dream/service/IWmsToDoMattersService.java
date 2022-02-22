@@ -24,5 +24,5 @@ public interface IWmsToDoMattersService extends IService<WmsToDoMatters> {
 
     Map queryEntryDeliverStockToDate(Map param);
 
-    Map queryEntryDeliverSchart(Map param);
+    Map queryEntryDeliverWeekSchart(Map param);
 }

@@ -85,9 +85,9 @@ public class WmsToDoMattersController {
      * @param
      * @return
      */
-    @PostMapping("/queryEntryDeliverSchart")
-    public Result queryEntryDeliverSchart(@RequestBody Map param) {
-        Map resMap= toDoMattersService.queryEntryDeliverSchart(param);
+    @PostMapping("/queryEntryDeliverWeekSchart")
+    public Result queryEntryDeliverWeekSchart(@RequestBody Map param) {
+        Map resMap= toDoMattersService.queryEntryDeliverWeekSchart(param);
         return Result.ok(resMap);
     }
 }

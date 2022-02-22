@@ -136,7 +136,7 @@
 import Schart from "vue-schart";
 import {reactive,ref} from "vue";
 import moment from "moment";
-import {queryToDoMattersList, queryToDoMattersStatus, saveMatterPost,queryEntryDeliverStockToDate,queryEntryDeliverSchart} from "../api/index.js";
+import {queryToDoMattersList, queryToDoMattersStatus, saveMatterPost,queryEntryDeliverStockToDate,queryEntryDeliverWeekSchart} from "../api/index.js";
 import {ElMessage} from "element-plus";
 
 export default {
@@ -169,15 +169,15 @@ export default {
         text: "最近一周出入库情况",
       },
       xRorate: 25,
-      labels: ["周一", "周二", "周三", "周四", "周五"],
+      labels: [],
       datasets: [
         {
           label: "入库金额",
-          data: [234, 278, 270, 190, 230],
+          data: [],
         },
         {
           label: "出库",
-          data: [164, 178, 190, 135, 160],
+          data: [],
         }
       ],
     });
@@ -235,7 +235,7 @@ export default {
     queryEntryDeliverStockMoney();
     //查询图标数据
     const queryEntryDeliverSchartData=()=>{
-      queryEntryDeliverSchart({}).then((res)=>{
+      queryEntryDeliverWeekSchart({}).then((res)=>{
         options.value.labels=res.data.week;
         options.value.datasets[0].data=res.data.weekEntryData;
         options.value.datasets[1].data=res.data.weekDeliverData;
