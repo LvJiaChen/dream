@@ -13,7 +13,9 @@ import com.dream.common.mapper.WmsDeliverMapper;
 import com.dream.common.mapper.WmsEntryMapper;
 import com.dream.common.mapper.WmsStockMapper;
 import com.dream.common.mapper.WmsToDoMattersMapper;
+import com.dream.common.vo.WmsDeliverMonthVo;
 import com.dream.common.vo.WmsDeliverWeekVo;
+import com.dream.common.vo.WmsEntryMonthVo;
 import com.dream.common.vo.WmsEntryWeekVo;
 import com.dream.service.IWmsToDoMattersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -192,6 +194,87 @@ public class WmsToDoMattersServiceImpl extends ServiceImpl<WmsToDoMattersMapper,
         resMap.put("week",weekDayList);
         resMap.put("weekEntryData",entryMoneyList);
         resMap.put("weekDeliverData",deliverMoneyList);
+        return resMap;
+    }
+
+    @Override
+    public Map queryEntryDeliverMonthSchart(Map param) {
+        Map resMap=new HashMap();
+
+        String[] months = { "1月","2月", "3月", "4月", "5月", "6月", "7月","8月","9月", "10月", "11月", "12月"};
+        //获得连续月份
+        List<String> monthList=new ArrayList<>();
+        //当前月份
+        for (int i = -6; i < 0; i++) {
+            Date date = DateUtil.offsetMonth(new Date(),i);
+            monthList.add(months[DateUtil.month(date)]);
+        }
+        //六个月之前的日期
+        Date startDate =  DateUtil.beginOfMonth(DateUtil.offsetMonth(new Date(),-6));
+        Date endDate =  DateUtil.endOfMonth(DateUtil.offsetMonth(new Date(),-1));
+        //查询近六个月出入库数据
+        List<BigDecimal> entryMoneyList=new ArrayList<>();
+        QueryWrapper<WmsEntry> entryQueryWrapper=new QueryWrapper<>();
+        entryQueryWrapper.ge("entry_date",startDate);
+        entryQueryWrapper.lt("entry_date",endDate);
+        entryQueryWrapper.eq("status","入库");
+        List<WmsEntry> entryListMonth=entryMapper.selectList(entryQueryWrapper);
+        List<WmsEntryMonthVo> wmsEntryMonthVoList=new ArrayList<>();
+        entryListMonth.forEach(a->{
+            WmsEntryMonthVo entryMonthVo=new WmsEntryMonthVo();
+            entryMonthVo.setEntryDateStr(DateUtil.format(a.getEntryDate(),"yyyy-MM"));
+            entryMonthVo.setMonth(months[DateUtil.month(a.getEntryDate())]);
+            entryMonthVo.setMoney(a.getMoney());
+            wmsEntryMonthVoList.add(entryMonthVo);
+        });
+        Map<String,List<WmsEntryMonthVo>> entryDateStrMap= wmsEntryMonthVoList.stream().collect(Collectors.groupingBy(WmsEntryMonthVo::getEntryDateStr));
+
+        //结果
+        Map<String,BigDecimal> monthMoneyEntryMap=new HashMap<>();
+
+        for (String key:entryDateStrMap.keySet()){
+            List<WmsEntryMonthVo> monthVos=entryDateStrMap.get(key);
+            BigDecimal moneyAll =monthVos.stream().map(WmsEntryMonthVo::getMoney).reduce(BigDecimal.ZERO,BigDecimal::add);
+            monthMoneyEntryMap.put(monthVos.get(0).getMonth(),moneyAll);
+        }
+
+        //结果为空补齐
+        monthList.forEach(a->{
+            entryMoneyList.add(monthMoneyEntryMap.get(a)==null?BigDecimal.ZERO:monthMoneyEntryMap.get(a));
+        });
+
+        List<BigDecimal> deliverMoneyList=new ArrayList<>();
+        QueryWrapper<WmsDeliver> deliverQueryWrapper=new QueryWrapper<>();
+        deliverQueryWrapper.ge("deliver_date",startDate);
+        deliverQueryWrapper.lt("deliver_date",endDate);
+        deliverQueryWrapper.eq("status","出库");
+        List<WmsDeliver> deliverListMonth=deliverMapper.selectList(deliverQueryWrapper);
+        List<WmsDeliverMonthVo> wmwDeliverMonthVoList=new ArrayList<>();
+        deliverListMonth.forEach(a->{
+            WmsDeliverMonthVo deliverMonthVo=new WmsDeliverMonthVo();
+            deliverMonthVo.setDeliverDateStr(DateUtil.format(a.getDeliverDate(),"yyyy-MM"));
+            deliverMonthVo.setMonth(months[DateUtil.month(a.getDeliverDate())]);
+            deliverMonthVo.setMoney(a.getMoney());
+            wmwDeliverMonthVoList.add(deliverMonthVo);
+        });
+        Map<String,List<WmsDeliverMonthVo>> deliverDateStrMap= wmwDeliverMonthVoList.stream().collect(Collectors.groupingBy(WmsDeliverMonthVo::getDeliverDateStr));
+
+        //结果
+        Map<String,BigDecimal> monthMoneyDeliverMap=new HashMap<>();
+
+        for (String key:deliverDateStrMap.keySet()){
+            List<WmsDeliverMonthVo> monthVos=deliverDateStrMap.get(key);
+            BigDecimal moneyAll =monthVos.stream().map(WmsDeliverMonthVo::getMoney).reduce(BigDecimal.ZERO,BigDecimal::add);
+            monthMoneyDeliverMap.put(monthVos.get(0).getMonth(),moneyAll);
+        }
+
+        //结果为空补齐
+        monthList.forEach(a->{
+            deliverMoneyList.add(monthMoneyDeliverMap.get(a)==null?BigDecimal.ZERO:monthMoneyDeliverMap.get(a));
+        });
+        resMap.put("month",monthList);
+        resMap.put("monthEntryData",entryMoneyList);
+        resMap.put("monthDeliverData",deliverMoneyList);
         return resMap;
     }
 }

@@ -117,7 +117,11 @@ export const saveMatterPost = data => {
 export const queryEntryDeliverStockToDate = data => {
     return Axios.post(baseUrl+"/wms-to-do-matters/queryEntryDeliverStockToDate",data);
 };
-/*查询出入库金额图标数据*/
+/*查询出入库金额图表近一周数据*/
 export const queryEntryDeliverWeekSchart = data => {
     return Axios.post(baseUrl+"/wms-to-do-matters/queryEntryDeliverWeekSchart",data);
+};
+/*查询出入库金额图表近几个月数据*/
+export const queryEntryDeliverMonthSchart = data => {
+    return Axios.post(baseUrl+"/wms-to-do-matters/queryEntryDeliverMonthSchart",data);
 };

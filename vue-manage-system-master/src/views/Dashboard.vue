@@ -136,7 +136,7 @@
 import Schart from "vue-schart";
 import {reactive,ref} from "vue";
 import moment from "moment";
-import {queryToDoMattersList, queryToDoMattersStatus, saveMatterPost,queryEntryDeliverStockToDate,queryEntryDeliverWeekSchart} from "../api/index.js";
+import {queryToDoMattersList, queryToDoMattersStatus, saveMatterPost,queryEntryDeliverStockToDate,queryEntryDeliverWeekSchart,queryEntryDeliverMonthSchart} from "../api/index.js";
 import {ElMessage} from "element-plus";
 
 export default {
@@ -181,10 +181,10 @@ export default {
         }
       ],
     });
-    const options2 = {
+    const options2 = ref({
       type: "line",
       title: {
-        text: "最近几个月出入库趋势图",
+        text: "最近半年出入库趋势图",
       },
       labels: ["6月", "7月", "8月", "9月", "10月"],
       datasets: [
@@ -197,7 +197,7 @@ export default {
           data: [164, 178, 150, 135, 160],
         }
       ],
-    };
+    });
     const todoList = ref([]);
     const queryTodoList=()=>{
       queryToDoMattersList({}).then((res)=>{
@@ -239,6 +239,11 @@ export default {
         options.value.labels=res.data.week;
         options.value.datasets[0].data=res.data.weekEntryData;
         options.value.datasets[1].data=res.data.weekDeliverData;
+      })
+      queryEntryDeliverMonthSchart({}).then((res)=>{
+        options2.value.labels=res.data.month;
+        options2.value.datasets[0].data=res.data.monthEntryData;
+        options2.value.datasets[1].data=res.data.monthDeliverData;
       })
     };
     queryEntryDeliverSchartData();

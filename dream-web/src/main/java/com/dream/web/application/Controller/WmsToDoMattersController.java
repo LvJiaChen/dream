@@ -80,7 +80,7 @@ public class WmsToDoMattersController {
     }
 
     /**
-     * 查询出入库报表数据
+     * 查询出入库图片数据近一周数据
      *
      * @param
      * @return
@@ -88,6 +88,19 @@ public class WmsToDoMattersController {
     @PostMapping("/queryEntryDeliverWeekSchart")
     public Result queryEntryDeliverWeekSchart(@RequestBody Map param) {
         Map resMap= toDoMattersService.queryEntryDeliverWeekSchart(param);
+        return Result.ok(resMap);
+    }
+
+
+    /**
+     * 查询出入库图表数据近几个月
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/queryEntryDeliverMonthSchart")
+    public Result queryEntryDeliverMonthSchart(@RequestBody Map param) {
+        Map resMap= toDoMattersService.queryEntryDeliverMonthSchart(param);
         return Result.ok(resMap);
     }
 }
